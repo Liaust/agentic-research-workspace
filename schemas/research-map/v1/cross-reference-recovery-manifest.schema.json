@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/cross-reference-recovery-manifest.schema.json",
+  "title": "Immutable failed-shard recovery manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "recovery_id", "origin_run_id",
+    "origin_run_root", "destination_run_root", "model", "policy",
+    "origin_artifacts", "successful_shards", "failed_shards", "expected_inventory"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "cross_reference_recovery_manifest" },
+    "recovery_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "origin_run_id": { "type": "string", "minLength": 1 },
+    "origin_run_root": { "type": "string", "minLength": 1 },
+    "destination_run_root": { "type": "string", "minLength": 1 },
+    "model": { "type": "string", "minLength": 1 },
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_workers", "attempts_per_shard", "automatic_retries"],
+      "properties": {
+        "max_workers": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "attempts_per_shard": { "type": "integer", "const": 1 },
+        "automatic_retries": { "type": "integer", "const": 0 }
+      }
+    },
+    "origin_artifacts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["terminal_report", "corpus_graph", "graph_manifest", "pair_coverage"],
+      "properties": {
+        "terminal_report": { "$ref": "#/$defs/artifact" },
+        "corpus_graph": { "$ref": "#/$defs/artifact" },
+        "graph_manifest": { "$ref": "#/$defs/artifact" },
+        "pair_coverage": { "$ref": "#/$defs/artifact" }
+      }
+    },
+    "successful_shards": { "type": "array", "items": { "$ref": "#/$defs/successfulShard" } },
+    "failed_shards": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/shard" } },
+    "expected_inventory": {
+      "type": "object", "additionalProperties": false,
+      "required": ["failed_shards", "successful_shards", "failed_pairs", "retained_surfaces", "retained_relationships"],
+      "properties": {
+        "failed_shards": { "type": "integer", "minimum": 1 },
+        "successful_shards": { "type": "integer", "minimum": 0 },
+        "failed_pairs": { "type": "integer", "minimum": 1 },
+        "retained_surfaces": { "type": "integer", "minimum": 0 },
+        "retained_relationships": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "pair": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "successfulShard": {
+      "type": "object", "additionalProperties": false,
+      "required": ["shard_id", "job_id", "admission_receipt"],
+      "properties": {
+        "shard_id": { "type": "string", "minLength": 1 },
+        "job_id": { "type": "string", "pattern": "^xref_job_[0-9a-f]{24}$" },
+        "admission_receipt": { "$ref": "#/$defs/artifact" }
+      }
+    },
+    "shard": {
+      "type": "object", "additionalProperties": false,
+      "required": ["shard_id", "job_id", "batch_id", "source_ids", "owned_pairs", "original_receipt", "original_proposal", "frozen_records"],
+      "properties": {
+        "shard_id": { "type": "string", "minLength": 1 },
+        "job_id": { "type": "string", "minLength": 1 },
+        "batch_id": { "type": "string", "pattern": "^xref_batch_[0-9a-f]{24}$" },
+        "source_ids": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" } },
+        "owned_pairs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/pair" } },
+        "original_receipt": { "$ref": "#/$defs/artifact" },
+        "original_proposal": { "$ref": "#/$defs/artifact" },
+        "frozen_records": { "$ref": "#/$defs/artifact" }
+      }
+    }
+  }
+}

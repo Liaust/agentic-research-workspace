@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/cross-reference-admission-receipt.schema.json",
+  "title": "Deterministic relationship-local cross-reference admission receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "batch_id", "job_id", "raw_proposal",
+    "counts", "items", "diagnostics", "observed_surfaces"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "cross_reference_admission" },
+    "batch_id": { "type": "string", "pattern": "^xref_batch_[0-9a-f]{24}$" },
+    "job_id": { "type": "string", "pattern": "^xref_job_[0-9a-f]{24}$" },
+    "raw_proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admitted", "quarantined", "duplicate", "existing_noop"],
+      "properties": {
+        "admitted": { "type": "integer", "minimum": 0 },
+        "quarantined": { "type": "integer", "minimum": 0 },
+        "duplicate": { "type": "integer", "minimum": 0 },
+        "existing_noop": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/diagnostic" }
+    },
+    "observed_surfaces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/observedSurface" }
+    }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "nullableInteger": { "type": ["integer", "null"] },
+    "endpointPair": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "string" }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index", "raw_row_sha256", "raw_endpoint_ids",
+        "normalized_endpoint_ids", "surface_key", "disposition",
+        "reason_codes", "normalizations", "candidate_id", "relationship_id"
+      ],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "raw_row_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "raw_endpoint_ids": { "$ref": "#/$defs/endpointPair" },
+        "normalized_endpoint_ids": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/endpointPair" }
+          ]
+        },
+        "surface_key": { "$ref": "#/$defs/nullableString" },
+        "disposition": {
+          "type": "string",
+          "enum": ["admitted", "quarantined", "duplicate", "existing_noop"]
+        },
+        "reason_codes": { "type": "array", "items": { "type": "string" } },
+        "normalizations": { "type": "array", "items": { "type": "string" } },
+        "candidate_id": { "$ref": "#/$defs/nullableString" },
+        "relationship_id": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "surface_key", "relationship_index"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "surface_key": { "$ref": "#/$defs/nullableString" },
+        "relationship_index": { "$ref": "#/$defs/nullableInteger" }
+      }
+    },
+    "observedSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface_key", "relationship_indexes"],
+      "properties": {
+        "surface_key": { "type": "string" },
+        "relationship_indexes": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.local/research-map/v1/cross-reference-blind-probe-benchmark.schema.json",
+  "title": "Blind cross-reference coverage probe benchmark",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "benchmark_id", "source_ids", "candidates", "coverage_notes", "warnings"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "benchmark_id": {"type": "string", "minLength": 1},
+    "source_ids": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"type": "string", "pattern": "^LIB-[0-9]{3}$"}
+    },
+    "candidates": {
+      "type": "array",
+      "maxItems": 80,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_key",
+          "left_record_id",
+          "right_record_id",
+          "proposed_relation_type",
+          "direction",
+          "left_evidence_ids",
+          "right_evidence_ids",
+          "comparison_surface",
+          "scope_alignment",
+          "assumption_alignment",
+          "rationale",
+          "qualifications",
+          "importance"
+        ],
+        "properties": {
+          "candidate_key": {"type": "string", "minLength": 1},
+          "left_record_id": {"type": "string", "pattern": "^LIB-[0-9]{3}:atom:"},
+          "right_record_id": {"type": "string", "pattern": "^LIB-[0-9]{3}:atom:"},
+          "proposed_relation_type": {
+            "type": "string",
+            "enum": [
+              "potential_same_referent",
+              "potential_same_definition",
+              "potential_equivalence",
+              "potential_tension",
+              "potential_contradiction",
+              "potential_support",
+              "potential_qualification",
+              "potential_dependency"
+            ]
+          },
+          "direction": {
+            "type": "string",
+            "enum": ["symmetric", "left_to_right", "right_to_left"]
+          },
+          "left_evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "pattern": "^LIB-[0-9]{3}:evidence:"}
+          },
+          "right_evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "pattern": "^LIB-[0-9]{3}:evidence:"}
+          },
+          "comparison_surface": {"type": "string", "minLength": 1},
+          "scope_alignment": {"type": "string", "minLength": 1},
+          "assumption_alignment": {"type": "string", "minLength": 1},
+          "rationale": {"type": "string", "minLength": 1},
+          "qualifications": {"type": "array", "items": {"type": "string"}},
+          "importance": {"type": "integer", "minimum": 1, "maximum": 4}
+        }
+      }
+    },
+    "coverage_notes": {"type": "array", "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/cross-reference-recovery-launch-plan.schema.json",
+  "title": "Stable zero-call failed-shard recovery launch plan",
+  "type": "object",
+  "required": ["schema_version", "kind", "coordinator_version", "recovery_id", "origin_run_id", "origin_run_root", "destination_run_root", "model", "policy", "inventory", "semantic_contracts", "origin_artifacts", "successful_shards", "failed_shards"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "cross_reference_recovery_launch_plan" },
+    "coordinator_version": { "type": "string" },
+    "recovery_id": { "type": "string" },
+    "origin_run_id": { "type": "string" },
+    "origin_run_root": { "type": "string" },
+    "destination_run_root": { "type": "string" },
+    "model": { "type": "string" },
+    "policy": { "type": "object" },
+    "inventory": { "type": "object" },
+    "semantic_contracts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path", "sha256", "size_bytes"],
+        "properties": {
+          "kind": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "size_bytes": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "origin_artifacts": { "type": "array" },
+    "successful_shards": { "type": "array" },
+    "failed_shards": { "type": "array" }
+  },
+  "additionalProperties": false
+}

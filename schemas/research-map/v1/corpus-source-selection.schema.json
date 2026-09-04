@@ -1,0 +1,372 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/corpus-source-selection.schema.json",
+  "title": "Quality-labelled retained source snapshot selection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "source_id",
+    "selection_policy",
+    "quality_label",
+    "selected_origin",
+    "selected_snapshot",
+    "origin_snapshot",
+    "prior_candidate",
+    "fallback_reason",
+    "audit",
+    "semantic_jobs_started"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "corpus_source_selection" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "selection_policy": { "type": "string", "const": "quality_labelled_best_valid" },
+    "quality_label": { "$ref": "#/$defs/qualityLabel" },
+    "selected_origin": {
+      "type": "string",
+      "enum": ["prior_completion_wip", "source_run_provisional"]
+    },
+    "selected_snapshot": { "$ref": "#/$defs/snapshot" },
+    "origin_snapshot": { "type": "object" },
+    "prior_candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "source_state",
+        "wip_sha256",
+        "wip_revision_history_sha256",
+        "coverage_sha256",
+        "record_count",
+        "coverage_entry_count",
+        "deterministically_valid",
+        "validation_error"
+      ],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "source_state": { "type": "string", "minLength": 1 },
+        "wip_sha256": { "$ref": "#/$defs/sha256" },
+        "wip_revision_history_sha256": { "$ref": "#/$defs/sha256" },
+        "coverage_sha256": { "$ref": "#/$defs/sha256" },
+        "record_count": { "type": "integer", "minimum": 1 },
+        "coverage_entry_count": { "type": "integer", "minimum": 1 },
+        "deterministically_valid": { "type": "boolean" },
+        "validation_error": { "type": ["string", "null"] }
+      }
+    },
+    "fallback_reason": { "type": ["string", "null"] },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quality_label",
+        "started",
+        "terminal",
+        "outcome",
+        "terminal_state",
+        "failure_class",
+        "failure_reason",
+        "findings",
+        "findings_sha256",
+        "warnings",
+        "start_receipt",
+        "result_receipt",
+        "job_receipts",
+        "telemetry"
+      ],
+      "properties": {
+        "quality_label": { "$ref": "#/$defs/qualityLabel" },
+        "started": { "type": "boolean" },
+        "terminal": { "type": "boolean" },
+        "outcome": { "type": ["string", "null"], "enum": ["eligible", "excluded", null] },
+        "terminal_state": { "type": ["string", "null"] },
+        "failure_class": { "type": ["string", "null"] },
+        "failure_reason": { "type": ["string", "null"] },
+        "findings": { "type": "array", "items": { "type": "object" } },
+        "findings_sha256": { "$ref": "#/$defs/sha256" },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "start_receipt": { "type": ["object", "null"] },
+        "result_receipt": { "type": ["object", "null"] },
+        "job_receipts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/jobReceiptEvidence" }
+        },
+        "telemetry": { "$ref": "#/$defs/telemetry" }
+      }
+    },
+    "semantic_jobs_started": { "type": "integer", "const": 0 }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "qualityLabel": {
+      "type": "string",
+      "enum": [
+        "audited_passed",
+        "audited_with_findings",
+        "audit_interrupted",
+        "unaudited_provisional"
+      ]
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "run_id",
+        "source_state",
+        "wip_sha256",
+        "coverage_sha256",
+        "record_count",
+        "coverage_entry_count"
+      ],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "enum": ["prior_completion_wip", "source_run_provisional"]
+        },
+        "run_id": { "type": "string", "minLength": 1 },
+        "source_state": { "type": "string", "minLength": 1 },
+        "wip_sha256": { "$ref": "#/$defs/sha256" },
+        "coverage_sha256": { "$ref": "#/$defs/sha256" },
+        "record_count": { "type": "integer", "minimum": 1 },
+        "coverage_entry_count": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size_bytes"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tokenUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_tokens", "cached_input_tokens", "output_tokens"],
+      "properties": {
+        "input_tokens": { "type": "integer", "minimum": 0 },
+        "cached_input_tokens": { "type": "integer", "minimum": 0 },
+        "output_tokens": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "zeroTokenUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_tokens", "cached_input_tokens", "output_tokens"],
+      "properties": {
+        "input_tokens": { "type": "integer", "const": 0 },
+        "cached_input_tokens": { "type": "integer", "const": 0 },
+        "output_tokens": { "type": "integer", "const": 0 }
+      }
+    },
+    "transitionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transition_id", "from_state", "to_state", "applied", "receipt"],
+      "properties": {
+        "transition_id": { "type": "integer", "minimum": 1 },
+        "from_state": { "type": ["string", "null"] },
+        "to_state": { "type": "string", "minLength": 1 },
+        "applied": { "type": "boolean", "const": true },
+        "receipt": { "type": "object" }
+      }
+    },
+    "sourceReadingStartedTransitionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transition_id",
+        "from_state",
+        "to_state",
+        "applied",
+        "source_id",
+        "run_id",
+        "job_id",
+        "receipt"
+      ],
+      "properties": {
+        "transition_id": { "type": "integer", "minimum": 1 },
+        "from_state": { "type": "string", "const": "audit_failed" },
+        "to_state": { "type": "string", "const": "reading" },
+        "applied": { "type": "boolean", "const": true },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "job_id": { "type": "string", "minLength": 1 },
+        "receipt": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "job_id"],
+          "properties": {
+            "kind": { "type": "string", "const": "reading_started" },
+            "job_id": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "sourceReadingCompleteTransitionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transition_id",
+        "from_state",
+        "to_state",
+        "applied",
+        "source_id",
+        "run_id",
+        "job_id",
+        "receipt"
+      ],
+      "properties": {
+        "transition_id": { "type": "integer", "minimum": 1 },
+        "from_state": { "type": "string", "const": "reading" },
+        "to_state": { "type": "string", "const": "source_complete" },
+        "applied": { "type": "boolean", "const": true },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "job_id": { "type": "string", "minLength": 1 },
+        "receipt": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "record_count", "coverage_complete"],
+          "properties": {
+            "kind": { "type": "string", "const": "source_reading_complete" },
+            "record_count": { "type": "integer", "minimum": 1 },
+            "coverage_complete": { "type": "boolean", "const": true }
+          }
+        }
+      }
+    },
+    "sourceLifecycleTransitionEvidence": {
+      "oneOf": [
+        { "$ref": "#/$defs/sourceReadingStartedTransitionEvidence" },
+        { "$ref": "#/$defs/sourceReadingCompleteTransitionEvidence" }
+      ]
+    },
+    "retainedOrientationEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "classification",
+        "semantic_call",
+        "job_identity",
+        "run_identity",
+        "job_transitions",
+        "source_transitions"
+      ],
+      "properties": {
+        "kind": { "type": "string", "const": "retained_orientation_transition_evidence" },
+        "classification": { "type": "string", "const": "deterministic_nonsemantic" },
+        "semantic_call": { "type": "boolean", "const": false },
+        "job_identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["job_id", "run_id", "source_id", "job_kind", "attempt", "state"],
+          "properties": {
+            "job_id": { "type": "string", "minLength": 1 },
+            "run_id": { "type": "string", "minLength": 1 },
+            "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+            "job_kind": { "type": "string", "const": "orientation" },
+            "attempt": { "type": "integer", "minimum": 1 },
+            "state": { "type": "string", "const": "succeeded" }
+          }
+        },
+        "run_identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["run_id", "source_id", "requested_through", "model"],
+          "properties": {
+            "run_id": { "type": "string", "minLength": 1 },
+            "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+            "requested_through": { "type": "string", "const": "source_complete" },
+            "model": { "type": "string", "minLength": 1 }
+          }
+        },
+        "job_transitions": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/transitionEvidence" }
+        },
+        "source_transitions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceLifecycleTransitionEvidence" }
+        }
+      }
+    },
+    "jobReceiptEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "job_id",
+        "run_id",
+        "kind",
+        "state",
+        "receipt",
+        "semantic_job",
+        "duration_seconds",
+        "worker_events_emitted",
+        "token_usage"
+      ],
+      "properties": {
+        "job_id": { "type": "string", "minLength": 1 },
+        "run_id": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "state": { "type": "string", "minLength": 1 },
+        "receipt": {
+          "oneOf": [
+            { "$ref": "#/$defs/artifact" },
+            { "type": "null" }
+          ]
+        },
+        "durable_transition_evidence": { "$ref": "#/$defs/retainedOrientationEvidence" },
+        "semantic_job": { "type": "boolean" },
+        "duration_seconds": { "type": "number", "minimum": 0 },
+        "worker_events_emitted": { "type": "integer", "minimum": 0 },
+        "token_usage": { "$ref": "#/$defs/tokenUsage" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "receipt": { "type": "null" } },
+            "required": ["receipt"]
+          },
+          "then": {
+            "required": ["durable_transition_evidence"],
+            "properties": {
+              "semantic_job": { "const": false },
+              "duration_seconds": { "const": 0 },
+              "worker_events_emitted": { "const": 0 },
+              "token_usage": { "$ref": "#/$defs/zeroTokenUsage" }
+            }
+          },
+          "else": { "not": { "required": ["durable_transition_evidence"] } }
+        }
+      ]
+    },
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_jobs_started",
+        "duration_seconds",
+        "worker_events_emitted",
+        "token_usage"
+      ],
+      "properties": {
+        "semantic_jobs_started": { "type": "integer", "minimum": 0 },
+        "duration_seconds": { "type": "number", "minimum": 0 },
+        "worker_events_emitted": { "type": "integer", "minimum": 0 },
+        "token_usage": { "$ref": "#/$defs/tokenUsage" }
+      }
+    }
+  }
+}

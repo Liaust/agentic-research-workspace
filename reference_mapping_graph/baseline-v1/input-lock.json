@@ -1,0 +1,40 @@
+{
+  "baseline": {
+    "graph": {
+      "sha256": "ae1bc089023459e8c315e1392b64339ad8c44a212116a368f77b89c8cdcb5627",
+      "size_bytes": 7645587
+    },
+    "graph_manifest": {
+      "sha256": "ce95d23505a458318965076cd1e22568bf67314d7f33a9451d3373b7cda98e87",
+      "size_bytes": 267126
+    },
+    "private_report": {
+      "sha256": "ebf2f9decacfae896191cfff8dbd38cb7e8cd388feaaed9e49cd046f043cede8",
+      "size_bytes": 31256
+    },
+    "salvage_id": "superdeterminism-paper-corpus-relationship-salvage-v1"
+  },
+  "counts": {
+    "atoms": 2621,
+    "cross_source_relationships": 644,
+    "evidence_records": 2550,
+    "inspected_source_pairs": 1325,
+    "moves": 1416,
+    "records": 6872,
+    "registered_assets": 54,
+    "registered_sources": 53,
+    "source_local_edges": 14442,
+    "sources_in_baseline": 52,
+    "threads": 285,
+    "unresolved_source_pairs": 1
+  },
+  "external_actions_authorized": false,
+  "private_repository_commit": "712e5e53f122232ff0fba6bf33195f607dec5c54",
+  "public_data_scope": "aggregate_results_plus_synthetic_demonstration",
+  "repository_topology": "separate_clean_history_projection",
+  "schema_version": "1.0",
+  "source_integrity": {
+    "algorithm": "sha256(canonical-json(sorted source_id, source_yaml_sha256, registered assets(role, sha256, size_bytes)))",
+    "sha256": "092489dd5bd7c2910e8025c61c2d687831b5865a806a970ed58a16a43a832d5b"
+  }
+}

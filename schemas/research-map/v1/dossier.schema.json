@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/dossier.schema.json",
+  "title": "Coherent source-local paper dossier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_id", "title", "summary", "records"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "title": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "records": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "evidence.schema.json" },
+          { "$ref": "atom.schema.json" },
+          { "$ref": "move.schema.json" },
+          { "$ref": "thread.schema.json" }
+        ]
+      }
+    }
+  }
+}

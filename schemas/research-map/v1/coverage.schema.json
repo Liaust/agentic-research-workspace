@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/coverage.schema.json",
+  "title": "Source reading coverage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "complete", "entries", "errors"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "complete": { "type": "boolean" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["scope_id", "scope_kind", "disposition", "details"],
+        "properties": {
+          "scope_id": { "type": "string", "minLength": 1 },
+          "scope_kind": { "enum": ["page", "reading_scope"] },
+          "disposition": { "enum": ["pending", "covered", "reopened", "not_substantive", "manual_review"] },
+          "details": { "type": "object" }
+        }
+      }
+    },
+    "errors": { "type": "array", "items": { "type": "string" } }
+  }
+}

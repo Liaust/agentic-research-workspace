@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/result-envelope.schema.json",
+  "title": "Research map command result envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "classification_version",
+    "classification",
+    "exit_code",
+    "command",
+    "ok",
+    "identifiers",
+    "current_state",
+    "artifacts",
+    "warnings",
+    "errors",
+    "data"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "classification_version": { "const": "1.0" },
+    "classification": {
+      "enum": [
+        "success",
+        "unresolved_identity",
+        "invalid_transition",
+        "validation_failure",
+        "worker_failure"
+      ]
+    },
+    "exit_code": { "enum": [0, 2, 3, 4, 5] },
+    "command": { "type": "string", "minLength": 1 },
+    "ok": { "type": "boolean" },
+    "identifiers": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "current_state": { "type": ["string", "null"] },
+    "artifacts": { "type": "array", "items": { "type": "object" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "data": { "type": "object" }
+  }
+}

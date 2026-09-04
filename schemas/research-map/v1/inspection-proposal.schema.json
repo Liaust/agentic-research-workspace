@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/inspection-proposal.schema.json",
+  "title": "Cross-reference evidence inspection proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "batch_id", "source_pair", "outcomes", "warnings"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "batch_id": { "type": "string", "pattern": "^xref_batch_[0-9a-f]{24}$" },
+    "source_pair": {
+      "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "outcomes": {
+      "type": "array", "minItems": 1,
+      "items": { "$ref": "#/$defs/outcome" }
+    },
+    "warnings": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  },
+  "$defs": {
+    "outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_id", "outcome", "disposition_reason", "relationship"],
+      "properties": {
+        "candidate_id": {
+          "type": "string", "pattern": "^xref_candidate_[0-9a-f]{24}$"
+        },
+        "outcome": {
+          "enum": [
+            "relationship", "not_usefully_connected", "insufficient_extraction",
+            "manual_review_candidate"
+          ]
+        },
+        "disposition_reason": { "type": "string", "minLength": 1 },
+        "relationship": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/relationship" }]
+        }
+      },
+      "allOf": [{
+        "if": {
+          "properties": { "outcome": { "const": "relationship" } },
+          "required": ["outcome"]
+        },
+        "then": { "properties": { "relationship": { "$ref": "#/$defs/relationship" } } },
+        "else": { "properties": { "relationship": { "type": "null" } } }
+      }]
+    },
+    "relationship": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "relation_type", "direction", "left_evidence_ids", "right_evidence_ids",
+        "comparison_surface", "scope_alignment", "assumption_alignment", "rationale",
+        "qualifications"
+      ],
+      "properties": {
+        "relation_type": {
+          "enum": [
+            "potential_same_referent", "potential_same_definition",
+            "potential_equivalence", "potential_support", "potential_qualification",
+            "potential_tension", "potential_contradiction", "potential_dependency"
+          ]
+        },
+        "direction": { "enum": ["symmetric", "left_to_right", "right_to_left"] },
+        "left_evidence_ids": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": { "type": "string" }
+        },
+        "right_evidence_ids": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": { "type": "string" }
+        },
+        "comparison_surface": { "type": "string", "minLength": 1 },
+        "scope_alignment": { "type": "string", "minLength": 1 },
+        "assumption_alignment": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 1 },
+        "qualifications": {
+          "type": "array", "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

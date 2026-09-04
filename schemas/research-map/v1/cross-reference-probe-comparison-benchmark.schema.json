@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.local/research-map/v1/cross-reference-probe-comparison-benchmark.schema.json",
+  "title": "Cross-reference blind-probe graph comparison benchmark",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "benchmark_id", "matches", "warnings"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "benchmark_id": {"type": "string", "minLength": 1},
+    "matches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_key",
+          "candidate_validity",
+          "candidate_utility",
+          "match_quality",
+          "matched_relationship_ids",
+          "match_kind",
+          "rationale"
+        ],
+        "properties": {
+          "candidate_key": {"type": "string", "minLength": 1},
+          "candidate_validity": {"type": "integer", "minimum": 0, "maximum": 4},
+          "candidate_utility": {"type": "integer", "minimum": 0, "maximum": 4},
+          "match_quality": {"type": "integer", "minimum": 0, "maximum": 4},
+          "matched_relationship_ids": {
+            "type": "array",
+            "items": {"type": "string", "pattern": "^xref_rel_[0-9a-f]+$"}
+          },
+          "match_kind": {
+            "type": "string",
+            "enum": ["exact_endpoint", "semantic_near", "partial", "none"]
+          },
+          "rationale": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  }
+}

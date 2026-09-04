@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/holistic-cross-reference-proposal.schema.json",
+  "title": "Coverage-audited holistic corpus cross-reference proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "batch_id",
+    "source_ids",
+    "existing_relationship_reviews",
+    "coverage_surfaces",
+    "relationships",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "batch_id": { "type": "string", "pattern": "^xref_batch_[0-9a-f]{24}$" },
+    "source_ids": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "existing_relationship_reviews": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/existingRelationshipReview" }
+    },
+    "coverage_surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/coverageSurface" }
+    },
+    "relationships": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/relationship" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "existingRelationshipReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relationship_id", "assessment", "rationale"],
+      "properties": {
+        "relationship_id": {
+          "type": "string",
+          "pattern": "^xref_rel_[0-9a-f]{24}$"
+        },
+        "assessment": {
+          "type": "string",
+          "enum": [
+            "retain",
+            "potential_type_issue",
+            "potential_scope_issue",
+            "manual_review"
+          ]
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "coverageSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surface_key",
+        "label",
+        "source_record_ids",
+        "disposition",
+        "existing_relationship_ids",
+        "rationale"
+      ],
+      "properties": {
+        "surface_key": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "label": { "type": "string", "minLength": 1 },
+        "source_record_ids": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "pattern": "^LIB-[0-9]{3}:atom:[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "covered_by_existing",
+            "covered_by_proposal",
+            "no_useful_relationship",
+            "manual_review_candidate"
+          ]
+        },
+        "existing_relationship_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^xref_rel_[0-9a-f]{24}$"
+          }
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surface_key",
+        "left_record_id",
+        "right_record_id",
+        "relation_type",
+        "direction",
+        "left_evidence_ids",
+        "right_evidence_ids",
+        "comparison_surface",
+        "scope_alignment",
+        "assumption_alignment",
+        "rationale",
+        "qualifications"
+      ],
+      "properties": {
+        "surface_key": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "left_record_id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:atom:[a-z0-9][a-z0-9-]*$"
+        },
+        "right_record_id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:atom:[a-z0-9][a-z0-9-]*$"
+        },
+        "relation_type": {
+          "type": "string",
+          "enum": [
+            "potential_same_referent",
+            "potential_same_definition",
+            "potential_equivalence",
+            "potential_support",
+            "potential_qualification",
+            "potential_tension",
+            "potential_contradiction",
+            "potential_dependency"
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["symmetric", "left_to_right", "right_to_left"]
+        },
+        "left_evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^LIB-[0-9]{3}:evidence:[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "right_evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^LIB-[0-9]{3}:evidence:[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "comparison_surface": { "type": "string", "minLength": 1 },
+        "scope_alignment": { "type": "string", "minLength": 1 },
+        "assumption_alignment": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 1 },
+        "qualifications": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

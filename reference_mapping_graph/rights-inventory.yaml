@@ -1,0 +1,70 @@
+schema_version: "1.0"
+inventory_id: superdeterminism-source-rights-2026-09-03
+source_count: 53
+asset_count: 54
+categories:
+  recorded_cc_by_4_0:
+    source_count: 2
+    source_ids:
+      - LIB-001
+      - LIB-050
+    release_posture: metadata_only_in_baseline
+  redistribution_not_assessed:
+    source_count: 51
+    source_ids:
+      - LIB-002
+      - LIB-003
+      - LIB-004
+      - LIB-005
+      - LIB-006
+      - LIB-007
+      - LIB-008
+      - LIB-009
+      - LIB-010
+      - LIB-011
+      - LIB-012
+      - LIB-013
+      - LIB-014
+      - LIB-015
+      - LIB-016
+      - LIB-017
+      - LIB-018
+      - LIB-019
+      - LIB-020
+      - LIB-021
+      - LIB-022
+      - LIB-023
+      - LIB-024
+      - LIB-025
+      - LIB-026
+      - LIB-027
+      - LIB-028
+      - LIB-029
+      - LIB-030
+      - LIB-031
+      - LIB-032
+      - LIB-033
+      - LIB-034
+      - LIB-035
+      - LIB-036
+      - LIB-037
+      - LIB-038
+      - LIB-039
+      - LIB-040
+      - LIB-041
+      - LIB-042
+      - LIB-043
+      - LIB-044
+      - LIB-045
+      - LIB-046
+      - LIB-047
+      - LIB-048
+      - LIB-049
+      - LIB-051
+      - LIB-052
+      - LIB-053
+    release_posture: metadata_only_in_baseline
+notes:
+  - Rights categories reproduce the explicit registration posture only; they are not legal conclusions.
+  - No PDF, exact evidence span, graph statement, relationship rationale, or source-derived prose is released.
+  - The synthetic demonstration has no third-party source dependency.

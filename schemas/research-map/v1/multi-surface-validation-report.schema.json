@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/multi-surface-validation-report.schema.json",
+  "title": "Exhaustive deterministic multi-surface proposal validation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "batch_id",
+    "source_ids",
+    "expected_pair_count",
+    "has_fatal_findings",
+    "finding_counts",
+    "findings",
+    "projection"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "multi_surface_validation_report" },
+    "batch_id": { "type": "string", "pattern": "^xref_batch_[0-9a-f]{24}$" },
+    "source_ids": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "expected_pair_count": { "type": "integer", "minimum": 0 },
+    "has_fatal_findings": { "type": "boolean" },
+    "finding_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fatal", "surface", "relationship"],
+      "properties": {
+        "fatal": { "type": "integer", "minimum": 0 },
+        "surface": { "type": "integer", "minimum": 0 },
+        "relationship": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accepted_surface_indexes",
+        "rejected_surface_indexes",
+        "accepted_relationship_indexes",
+        "rejected_relationship_indexes"
+      ],
+      "properties": {
+        "accepted_surface_indexes": { "$ref": "#/$defs/indexes" },
+        "rejected_surface_indexes": { "$ref": "#/$defs/indexes" },
+        "accepted_relationship_indexes": { "$ref": "#/$defs/indexes" },
+        "rejected_relationship_indexes": { "$ref": "#/$defs/indexes" }
+      }
+    }
+  },
+  "$defs": {
+    "indexes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "nullableString": { "type": ["string", "null"] },
+    "nullableInteger": { "type": ["integer", "null"] },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason_code",
+        "path",
+        "scope",
+        "message",
+        "pair_key",
+        "surface_key",
+        "relationship_index"
+      ],
+      "properties": {
+        "reason_code": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "path": { "type": "string", "pattern": "^\\$" },
+        "scope": { "type": "string", "enum": ["fatal", "surface", "relationship"] },
+        "message": { "type": "string", "minLength": 1 },
+        "pair_key": { "$ref": "#/$defs/nullableString" },
+        "surface_key": { "$ref": "#/$defs/nullableString" },
+        "relationship_index": { "$ref": "#/$defs/nullableInteger" }
+      }
+    }
+  }
+}

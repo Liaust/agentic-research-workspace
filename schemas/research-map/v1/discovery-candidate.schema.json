@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/discovery-candidate.schema.json",
+  "title": "Validated cross-reference discovery candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "candidate_id", "batch_id", "source_pair",
+    "left_endpoint", "right_endpoint", "comparison_surface", "discovery_job_id"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "candidate_id": { "type": "string", "pattern": "^xref_candidate_[0-9a-f]{24}$" },
+    "batch_id": { "type": "string", "pattern": "^xref_batch_[0-9a-f]{24}$" },
+    "source_pair": {
+      "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "left_endpoint": { "$ref": "#/$defs/endpoint" },
+    "right_endpoint": { "$ref": "#/$defs/endpoint" },
+    "comparison_surface": { "type": "string", "minLength": 1 },
+    "discovery_job_id": { "type": "string", "pattern": "^xref_job_[0-9a-f]{24}$" }
+  },
+  "$defs": {
+    "endpoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "record_id", "revision", "record_sha256"],
+      "properties": {
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "record_id": { "type": "string", "pattern": "^LIB-[0-9]{3}:atom:[a-z0-9][a-z0-9-]*$" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "record_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    }
+  }
+}

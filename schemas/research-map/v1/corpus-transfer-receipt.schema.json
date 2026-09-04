@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/corpus-transfer-receipt.schema.json",
+  "title": "Verified provisional source transfer receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "completion_run_id",
+    "source_run_id",
+    "source_id",
+    "source_state",
+    "destination_state",
+    "source_run_summary_sha256",
+    "source_result_sha256",
+    "source_registration_sha256",
+    "asset_fingerprints",
+    "wip_sha256",
+    "coverage_sha256",
+    "source_terminal_transition_sha256",
+    "job_receipts",
+    "projection_manifest_sha256",
+    "projection_artifacts",
+    "semantic_jobs_started"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "corpus_snapshot_transfer" },
+    "completion_run_id": { "type": "string", "minLength": 1 },
+    "source_run_id": { "type": "string", "minLength": 1 },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "source_state": { "type": "string", "const": "calibration_graph_inserted" },
+    "destination_state": { "type": "string", "const": "source_complete" },
+    "source_run_summary_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "source_result_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "source_registration_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "asset_fingerprints": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "wip_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "coverage_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "source_terminal_transition_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_receipts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "projection_manifest_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "projection_artifacts": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "semantic_jobs_started": { "type": "integer", "const": 0 }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size_bytes"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

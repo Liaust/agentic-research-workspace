@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/superdeterminism/knowledge-atom-v0.1.schema.json",
+  "title": "Knowledge atom v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "source_id",
+    "family",
+    "kind",
+    "label",
+    "content",
+    "source_posture",
+    "scope",
+    "evidence_ids",
+    "status",
+    "created_by"
+  ],
+  "properties": {
+    "schema_version": { "const": "knowledge-atom-v0.1" },
+    "id": { "type": "string", "pattern": "^A-[A-Z0-9]+-[0-9]{4,}$" },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3,}$" },
+    "family": {
+      "type": "string",
+      "enum": ["entity", "statement", "question", "symbolic", "argument"]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "concept",
+        "model",
+        "method",
+        "experiment",
+        "dataset",
+        "observable",
+        "parameter",
+        "theorem",
+        "mechanism",
+        "claim",
+        "definition",
+        "assumption",
+        "observation",
+        "result",
+        "prediction",
+        "criticism",
+        "limitation",
+        "interpretation",
+        "negative_result",
+        "research_question",
+        "open_question",
+        "problem",
+        "evidence_gap",
+        "equation",
+        "inequality",
+        "definition_expression",
+        "derivation_step",
+        "objective_function",
+        "constraint",
+        "argument"
+      ]
+    },
+    "label": { "type": "string", "minLength": 1 },
+    "content": { "type": "string", "minLength": 1 },
+    "source_posture": {
+      "type": "string",
+      "enum": [
+        "asserts",
+        "defines",
+        "assumes",
+        "derives",
+        "observes",
+        "hypothesizes",
+        "predicts",
+        "questions",
+        "criticizes",
+        "reports",
+        "rejects",
+        "discusses"
+      ]
+    },
+    "normal_form": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "subject": { "type": ["string", "null"] },
+        "predicate": { "type": ["string", "null"] },
+        "object_or_value": { "type": ["string", "number", "boolean", "null"] },
+        "entity_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["polarity", "modality"],
+      "properties": {
+        "system_or_population": { "type": ["string", "null"] },
+        "regime": { "type": ["string", "null"] },
+        "conditions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "assumption_ids": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^A-" },
+          "uniqueItems": true
+        },
+        "quantifier": { "type": ["string", "null"] },
+        "polarity": { "type": "string", "enum": ["positive", "negative", "mixed", "not-applicable"] },
+        "modality": {
+          "type": "string",
+          "enum": ["actual", "possible", "necessary", "probable", "conditional", "unknown", "not-applicable"]
+        },
+        "qualifications": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "symbolic": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "latex": { "type": "string" },
+        "printed_label": { "type": ["string", "null"] },
+        "role": {
+          "type": "string",
+          "enum": ["definition", "assumption", "law", "derived-result", "constraint", "approximation", "worked-instance", "other"]
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["symbol", "meaning"],
+            "properties": {
+              "symbol": { "type": "string" },
+              "meaning": { "type": "string" },
+              "domain": { "type": ["string", "null"] },
+              "units": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "fidelity_checked": { "type": "boolean" }
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^E-" },
+      "uniqueItems": true
+    },
+    "related_object_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^A-" },
+      "uniqueItems": true
+    },
+    "status": {
+      "type": "string",
+      "enum": ["candidate", "validated", "rejected", "superseded", "needs_review"]
+    },
+    "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "supersedes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^A-" },
+      "uniqueItems": true
+    },
+    "created_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor", "run_id", "created_at"],
+      "properties": {
+        "actor": { "type": "string", "minLength": 1 },
+        "run_id": { "type": "string", "minLength": 1 },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

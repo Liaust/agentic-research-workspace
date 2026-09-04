@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/workspace-manifest.schema.json",
+  "title": "Research map job workspace manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "source_id",
+    "workspace_kind",
+    "attempt",
+    "inputs",
+    "writable_paths",
+    "network_access"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "source_id": { "type": "string", "minLength": 1 },
+    "workspace_kind": {
+      "enum": [
+        "reading", "audit", "finding_verification",
+        "cross_reference_discovery", "cross_reference_inspection"
+      ]
+    },
+    "attempt": { "type": ["integer", "null"], "minimum": 1 },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "path",
+          "kind",
+          "area",
+          "sha256",
+          "size_bytes",
+          "immutable"
+        ],
+        "properties": {
+          "source_id": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "area": { "enum": ["input", "templates", "tools", "root"] },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "size_bytes": { "type": "integer", "minimum": 0 },
+          "immutable": { "const": true }
+        }
+      }
+    },
+    "writable_paths": {
+      "const": ["scratch", "output"]
+    },
+    "network_access": { "const": false },
+    "authorized_source_ids": {
+      "type": "array", "minItems": 2, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    }
+  }
+}

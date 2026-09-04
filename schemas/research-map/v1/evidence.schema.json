@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/evidence.schema.json",
+  "title": "Source-local evidence record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "record_type", "id", "revision", "source_id",
+    "asset_sha256", "page_start", "page_end", "locator", "exact_span"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "record_type": { "const": "evidence" },
+    "id": { "type": "string", "pattern": "^LIB-[0-9]{3}:evidence:[a-z0-9][a-z0-9-]*$" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "asset_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "page_start": { "type": "integer", "minimum": 1 },
+    "page_end": { "type": "integer", "minimum": 1 },
+    "locator": { "type": "string", "minLength": 1 },
+    "exact_span": { "type": "string", "minLength": 1 },
+    "segments": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": [
+          "page_start", "page_end", "locator", "transcription",
+          "transcription_mode"
+        ],
+        "properties": {
+          "page_start": { "type": "integer", "minimum": 1 },
+          "page_end": { "type": "integer", "minimum": 1 },
+          "locator": { "type": "string", "minLength": 1 },
+          "transcription": { "type": "string", "minLength": 1 },
+          "transcription_mode": {
+            "type": "string",
+            "enum": [
+              "verbatim_text", "normalized_text", "displayed_math", "figure_region"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

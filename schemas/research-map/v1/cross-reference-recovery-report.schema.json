@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/cross-reference-recovery-report.schema.json",
+  "title": "Terminal additive failed-shard recovery report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "recovery_id", "origin_run_id", "state",
+    "launch_plan_sha256", "counts", "pair_partitions", "shard_outcomes",
+    "telemetry", "graph", "graph_manifest", "retrieval"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "cross_reference_recovery_report" },
+    "recovery_id": { "type": "string" },
+    "origin_run_id": { "type": "string" },
+    "state": { "type": "string", "enum": ["complete", "partial"] },
+    "launch_plan_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "counts": { "type": "object" },
+    "pair_partitions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["original_successful", "recovered_inspected", "remaining_unresolved"],
+      "properties": {
+        "original_successful": { "$ref": "#/$defs/pairs" },
+        "recovered_inspected": { "$ref": "#/$defs/pairs" },
+        "remaining_unresolved": { "$ref": "#/$defs/pairs" }
+      }
+    },
+    "shard_outcomes": { "type": "array" },
+    "telemetry": { "type": "object" },
+    "graph": { "type": "object" },
+    "graph_manifest": { "type": "object" },
+    "retrieval": { "type": "object" }
+  },
+  "$defs": {
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "array", "minItems": 2, "maxItems": 2,
+        "items": { "type": "string" }
+      }
+    }
+  }
+}

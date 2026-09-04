@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/graph.schema.json",
+  "title": "Deterministic source-local research graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_id", "nodes", "edges"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "source_id": { "type": "string" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "record_type", "revision", "payload"],
+        "properties": {
+          "id": { "type": "string" },
+          "record_type": { "enum": ["evidence", "atom", "move", "thread"] },
+          "revision": { "type": "integer", "minimum": 1 },
+          "payload": { "type": "object" }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["source", "target", "kind"],
+        "properties": {
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "kind": { "type": "string" },
+          "position": { "type": "integer", "minimum": 0 },
+          "label": { "type": "string" }
+        }
+      }
+    }
+  }
+}

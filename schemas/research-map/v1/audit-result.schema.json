@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/audit-result.schema.json",
+  "title": "Fresh source-wide audit with inspectable review ledgers",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "source_id", "attempt", "outcome", "summary", "checks",
+    "inspection_ledger", "findings", "warnings", "reviewed_continuation"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "attempt": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "outcome": { "type": "string", "enum": ["pass", "reopen", "manual_review"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coverage_complete", "evidence_exact", "attribution_preserved",
+        "qualifications_preserved", "atoms_connected", "intermediate_moves_present",
+        "branches_reconstructable", "move_io_correct", "type_pressure_resolved",
+        "conclusions_traceable", "equation_figure_fidelity"
+      ],
+      "properties": {
+        "coverage_complete": { "type": "boolean" },
+        "evidence_exact": { "type": "boolean" },
+        "attribution_preserved": { "type": "boolean" },
+        "qualifications_preserved": { "type": "boolean" },
+        "atoms_connected": { "type": "boolean" },
+        "intermediate_moves_present": { "type": "boolean" },
+        "branches_reconstructable": { "type": "boolean" },
+        "move_io_correct": { "type": "boolean" },
+        "type_pressure_resolved": { "type": "boolean" },
+        "conclusions_traceable": { "type": "boolean" },
+        "equation_figure_fidelity": { "type": "boolean" }
+      }
+    },
+    "inspection_ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["coverage", "fidelity", "reasoning"],
+      "properties": {
+        "coverage": { "$ref": "#/$defs/inspection_lane" },
+        "fidelity": { "$ref": "#/$defs/inspection_lane" },
+        "reasoning": { "$ref": "#/$defs/inspection_lane" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "finding_id", "kind", "description", "record_ids", "landmark_ids",
+          "scope_ids", "evidence", "repair", "manual_review_reason"
+        ],
+        "properties": {
+          "finding_id": {
+            "type": "string",
+            "pattern": "^LIB-[0-9]{3}:finding:[a-z0-9][a-z0-9-]*$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "missing_landmark", "missing_evidence", "incorrect_attribution",
+              "missing_qualification", "disconnected_atom", "missing_intermediate_move",
+              "broken_branch", "incorrect_move_io", "forced_type",
+              "manual_review_required"
+            ]
+          },
+          "description": { "type": "string", "minLength": 1 },
+          "record_ids": { "type": "array", "items": { "type": "string" } },
+          "landmark_ids": { "type": "array", "items": { "type": "string" } },
+          "scope_ids": { "type": "array", "items": { "type": "string" } },
+          "evidence": { "type": "string", "minLength": 1 },
+          "repair": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["revise_record_ids", "add_for_landmark_ids", "reopen_scope_ids"],
+            "properties": {
+              "revise_record_ids": { "type": "array", "items": { "type": "string" } },
+              "add_for_landmark_ids": { "type": "array", "items": { "type": "string" } },
+              "reopen_scope_ids": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "manual_review_reason": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "reviewed_continuation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "kind", "reviewed_resume_transition_id", "originating_audit_attempt",
+        "originating_audit_job_id", "selected_finding_ids", "allowed_record_ids",
+        "allowed_new_landmark_ids", "allowed_reopen_scope_ids"
+      ],
+      "properties": {
+        "kind": { "type": "string", "const": "reviewed_verification" },
+        "reviewed_resume_transition_id": { "type": "integer", "minimum": 1 },
+        "originating_audit_attempt": { "type": "integer", "const": 3 },
+        "originating_audit_job_id": { "type": "string", "minLength": 1 },
+        "selected_finding_ids": {
+          "type": "array", "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "allowed_record_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allowed_new_landmark_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allowed_reopen_scope_ids": {
+          "type": "array", "minItems": 1,
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "inspection_lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_ids", "passed_ids", "failed_ids"],
+      "properties": {
+        "expected_ids": { "type": "array", "items": { "type": "string" } },
+        "passed_ids": { "type": "array", "items": { "type": "string" } },
+        "failed_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,420 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.local/schemas/research-map/experiments/hierarchical-reading-proposal.schema.json",
+  "title": "Experimental hierarchical whole-paper reading proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_id",
+    "scope_id",
+    "disposition",
+    "paper_summary",
+    "argument_blocks",
+    "evidence_records",
+    "atom_records",
+    "move_records",
+    "thread_records",
+    "source_objects",
+    "manual_review_reasons",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "scope_id": { "type": "string", "const": "whole-paper" },
+    "disposition": {
+      "type": "string",
+      "enum": ["covered", "manual_review"]
+    },
+    "paper_summary": { "type": "string", "minLength": 1 },
+    "argument_blocks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/argument_block" }
+    },
+    "evidence_records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/evidence" }
+    },
+    "atom_records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/atom" }
+    },
+    "move_records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/move" }
+    },
+    "thread_records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/thread" }
+    },
+    "source_objects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source_object" }
+    },
+    "manual_review_reasons": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "type_gap": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["slug", "rationale"],
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "fidelity": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "source_form",
+        "context",
+        "scope_assumptions",
+        "visual_disposition"
+      ],
+      "properties": {
+        "source_form": { "type": "string", "minLength": 1 },
+        "context": { "type": "string", "minLength": 1 },
+        "scope_assumptions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "visual_disposition": { "type": "string", "minLength": 1 }
+      }
+    },
+    "argument_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_id",
+        "sequence",
+        "label",
+        "summary",
+        "page_start",
+        "page_end",
+        "atom_ids",
+        "move_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:block:[a-z0-9][a-z0-9-]*$"
+        },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "sequence": { "type": "integer", "minimum": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "page_start": { "type": "integer", "minimum": 1 },
+        "page_end": { "type": "integer", "minimum": 1 },
+        "atom_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "move_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "evidence_segment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page_start",
+        "page_end",
+        "locator",
+        "transcription",
+        "transcription_mode"
+      ],
+      "properties": {
+        "page_start": { "type": "integer", "minimum": 1 },
+        "page_end": { "type": "integer", "minimum": 1 },
+        "locator": { "type": "string", "minLength": 1 },
+        "transcription": { "type": "string", "minLength": 1 },
+        "transcription_mode": {
+          "type": "string",
+          "enum": ["verbatim_text", "displayed_math", "figure_region"]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "id",
+        "revision",
+        "source_id",
+        "asset_sha256",
+        "page_start",
+        "page_end",
+        "locator",
+        "segments"
+      ],
+      "properties": {
+        "schema_version": { "type": "integer", "const": 1 },
+        "record_type": { "type": "string", "const": "evidence" },
+        "id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:evidence:[a-z0-9][a-z0-9-]*$"
+        },
+        "revision": { "type": "integer", "const": 1 },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "asset_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "page_start": { "type": "integer", "minimum": 1 },
+        "page_end": { "type": "integer", "minimum": 1 },
+        "locator": { "type": "string", "minLength": 1 },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/evidence_segment" }
+        }
+      }
+    },
+    "atom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "id",
+        "revision",
+        "source_id",
+        "kind",
+        "label",
+        "statement",
+        "evidence_ids",
+        "scope",
+        "attribution",
+        "epistemic_posture",
+        "qualifications",
+        "connectable",
+        "standalone_context",
+        "type_gap",
+        "fidelity"
+      ],
+      "properties": {
+        "schema_version": { "type": "integer", "const": 1 },
+        "record_type": { "type": "string", "const": "atom" },
+        "id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:atom:[a-z0-9][a-z0-9-]*$"
+        },
+        "revision": { "type": "integer", "const": 1 },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "kind": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "statement": { "type": "string", "minLength": 1 },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "scope": { "type": "string", "minLength": 1 },
+        "attribution": { "type": "string", "minLength": 1 },
+        "epistemic_posture": { "type": "string", "minLength": 1 },
+        "qualifications": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "connectable": { "type": "boolean" },
+        "standalone_context": { "type": ["string", "null"] },
+        "type_gap": { "$ref": "#/$defs/type_gap" },
+        "fidelity": { "$ref": "#/$defs/fidelity" }
+      }
+    },
+    "move": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "id",
+        "revision",
+        "source_id",
+        "role",
+        "label",
+        "summary",
+        "inputs",
+        "outputs",
+        "evidence_ids",
+        "thread_id",
+        "presentation_index",
+        "scientific_use",
+        "type_gap"
+      ],
+      "properties": {
+        "schema_version": { "type": "integer", "const": 1 },
+        "record_type": { "type": "string", "const": "move" },
+        "id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:move:[a-z0-9][a-z0-9-]*$"
+        },
+        "revision": { "type": "integer", "const": 1 },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "inputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "thread_id": { "type": "string" },
+        "presentation_index": { "type": "integer", "minimum": 1 },
+        "scientific_use": { "type": "string", "minLength": 1 },
+        "type_gap": { "$ref": "#/$defs/type_gap" }
+      }
+    },
+    "thread": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "id",
+        "revision",
+        "source_id",
+        "kind",
+        "title",
+        "summary",
+        "move_ids",
+        "entry_points",
+        "branches",
+        "evidence_ids",
+        "type_gap"
+      ],
+      "properties": {
+        "schema_version": { "type": "integer", "const": 1 },
+        "record_type": { "type": "string", "const": "thread" },
+        "id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:thread:[a-z0-9][a-z0-9-]*$"
+        },
+        "revision": { "type": "integer", "const": 1 },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "kind": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "move_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "entry_points": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "branches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["from_move", "to_move", "label"],
+            "properties": {
+              "from_move": { "type": "string" },
+              "to_move": { "type": "string" },
+              "label": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "type_gap": { "$ref": "#/$defs/type_gap" }
+      }
+    },
+    "source_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_id",
+        "kind",
+        "source_label",
+        "page",
+        "role",
+        "evidence_ids",
+        "atom_ids",
+        "move_ids",
+        "grouping_rationale"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^LIB-[0-9]{3}:object:[a-z0-9][a-z0-9-]*$"
+        },
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "kind": {
+          "type": "string",
+          "enum": ["equation", "figure", "table", "diagram", "other"]
+        },
+        "source_label": { "type": "string", "minLength": 1 },
+        "page": { "type": "integer", "minimum": 1 },
+        "role": {
+          "type": "string",
+          "enum": [
+            "target",
+            "definition",
+            "assumption",
+            "construction",
+            "assignment",
+            "check",
+            "equivalent-form",
+            "result",
+            "illustration",
+            "other"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "atom_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "move_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "grouping_rationale": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

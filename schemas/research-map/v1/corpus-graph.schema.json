@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/corpus-graph.schema.json",
+  "title": "Deterministic multi-source research graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "batch_id", "sources", "nodes", "edges"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "batch_id": { "type": "string", "pattern": "^xref_batch_[0-9a-f]{24}$" },
+    "sources": {
+      "type": "array", "minItems": 2, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "source_id", "record_type", "revision", "payload"],
+        "properties": {
+          "id": { "type": "string" },
+          "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+          "record_type": { "enum": ["evidence", "atom", "move", "thread"] },
+          "revision": { "type": "integer", "minimum": 1 },
+          "payload": { "type": "object" }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["source", "target", "kind", "origin", "relationship_id"],
+        "properties": {
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "kind": { "type": "string", "minLength": 1 },
+          "origin": { "enum": ["source_local", "cross_source"] },
+          "relationship_id": { "type": ["string", "null"] },
+          "position": { "type": "integer", "minimum": 0 },
+          "label": { "type": "string" }
+        }
+      }
+    }
+  }
+}

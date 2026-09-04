@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/atom.schema.json",
+  "title": "Source-local semantic atom",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "record_type", "id", "revision", "source_id", "kind",
+    "label", "statement", "evidence_ids", "scope", "attribution",
+    "epistemic_posture", "qualifications", "connectable", "standalone_context",
+    "type_gap", "fidelity"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "record_type": { "const": "atom" },
+    "id": { "type": "string", "pattern": "^LIB-[0-9]{3}:atom:[a-z0-9][a-z0-9-]*$" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "kind": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "label": { "type": "string", "minLength": 1 },
+    "statement": { "type": "string", "minLength": 1 },
+    "evidence_ids": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "scope": { "type": "string", "minLength": 1 },
+    "attribution": { "type": "string", "minLength": 1 },
+    "epistemic_posture": { "type": "string", "minLength": 1 },
+    "qualifications": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "connectable": { "type": "boolean" },
+    "standalone_context": { "type": ["string", "null"] },
+    "type_gap": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["slug", "rationale"],
+          "properties": {
+            "slug": { "type": "string", "minLength": 1 },
+            "rationale": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    },
+    "fidelity": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["source_form", "context", "scope_assumptions", "visual_disposition"],
+          "properties": {
+            "source_form": { "type": "string", "minLength": 1 },
+            "context": { "type": "string", "minLength": 1 },
+            "scope_assumptions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+            "visual_disposition": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "enum": ["equation", "figure"] } }, "required": ["kind"] },
+      "then": { "properties": { "fidelity": { "type": "object" } } }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/cross-reference-recovery-graph-manifest.schema.json",
+  "title": "Manifest-verified additive recovery graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "recovery_id", "origin_run_id", "batch_id",
+    "sources", "launch_plan_sha256", "origin_graph_sha256", "inputs",
+    "corpus_graph", "node_count", "source_local_edge_count",
+    "origin_relationship_count", "recovered_relationship_count",
+    "cross_source_edge_count", "source_quality", "quality_label_counts",
+    "selected_origin_counts", "structurally_invalid_sources"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "cross_reference_recovery_graph_manifest" },
+    "recovery_id": { "type": "string" },
+    "origin_run_id": { "type": "string" },
+    "batch_id": { "type": "string" },
+    "sources": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "launch_plan_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "origin_graph_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "inputs": { "type": "array", "items": { "$ref": "#/$defs/artifact" } },
+    "corpus_graph": { "$ref": "#/$defs/artifact" },
+    "node_count": { "type": "integer", "minimum": 0 },
+    "source_local_edge_count": { "type": "integer", "minimum": 0 },
+    "origin_relationship_count": { "type": "integer", "minimum": 0 },
+    "recovered_relationship_count": { "type": "integer", "minimum": 0 },
+    "cross_source_edge_count": { "type": "integer", "minimum": 0 },
+    "source_quality": { "type": "array" },
+    "quality_label_counts": { "type": "object" },
+    "selected_origin_counts": { "type": "object" },
+    "structurally_invalid_sources": { "type": "array" }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "path", "sha256", "size_bytes"],
+      "properties": {
+        "kind": { "type": "string" },
+        "path": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

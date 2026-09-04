@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/public-release/v1/public-release-manifest.schema.json",
+  "title": "Deterministic public release manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "release_id", "policy_id", "private_inputs", "public_scope", "files", "tree_sha256"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "release_id": {"const": "public-experimental-repository-baseline-v1"},
+    "policy_id": {"const": "public-experimental-repository-baseline-v1"},
+    "private_inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["private_repository_commit", "projection_repository_commit", "graph_sha256", "graph_manifest_sha256", "private_report_sha256", "source_integrity_sha256"],
+      "properties": {
+        "private_repository_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "projection_repository_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "graph_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "graph_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "private_report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_integrity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "public_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data", "license", "dataset_license", "third_party_rights", "external_actions_authorized"],
+      "properties": {
+        "data": {"const": "aggregate_results_plus_synthetic_demonstration"},
+        "license": {"const": "Apache-2.0"},
+        "dataset_license": {"const": "none_granted"},
+        "third_party_rights": {"const": "separate"},
+        "external_actions_authorized": {"const": false}
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "size_bytes", "mode"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "size_bytes": {"type": "integer", "minimum": 0},
+          "mode": {"enum": ["100644", "100755"]}
+        }
+      }
+    },
+    "tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

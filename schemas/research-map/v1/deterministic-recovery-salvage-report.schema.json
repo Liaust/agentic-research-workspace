@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/deterministic-recovery-salvage-report.schema.json",
+  "title": "Terminal deterministic recovery salvage report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "kind", "salvage_id", "origin_recovery_id",
+    "origin_run_id", "shard_id", "state", "plan_sha256", "counts",
+    "pair_partitions", "dispositions", "telemetry", "graph",
+    "graph_manifest", "admission", "retrieval"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "deterministic_recovery_salvage_report" },
+    "salvage_id": { "type": "string", "minLength": 1 },
+    "origin_recovery_id": { "type": "string", "minLength": 1 },
+    "origin_run_id": { "type": "string", "minLength": 1 },
+    "shard_id": { "type": "string", "minLength": 1 },
+    "state": { "type": "string", "enum": ["complete", "partial"] },
+    "plan_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "counts": { "type": "object" },
+    "pair_partitions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["origin_inspected", "salvaged_inspected", "remaining_unresolved"],
+      "properties": {
+        "origin_inspected": { "$ref": "#/$defs/pairs" },
+        "salvaged_inspected": { "$ref": "#/$defs/pairs" },
+        "remaining_unresolved": { "$ref": "#/$defs/pairs" }
+      }
+    },
+    "dispositions": { "type": "object" },
+    "telemetry": { "type": "object" },
+    "graph": { "$ref": "#/$defs/artifact" },
+    "graph_manifest": { "$ref": "#/$defs/artifact" },
+    "admission": { "$ref": "#/$defs/artifact" },
+    "retrieval": { "type": "object" }
+  },
+  "$defs": {
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "array", "minItems": 2, "maxItems": 2,
+        "items": { "type": "string" }
+      }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "path", "sha256", "size_bytes"],
+      "properties": {
+        "kind": { "type": "string" },
+        "path": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "interface": "research-map",
+  "commands": [
+    {
+      "name": "build-public-release",
+      "purpose": "Build a deterministic public projection from explicit frozen private inputs.",
+      "argv": [
+        "uv", "run", "research-map", "build-public-release",
+        "--repository-root", "<repository-root>",
+        "--source-registration-root", "<source-registration-root>",
+        "--asset-root", "<asset-root>",
+        "--graph", "<graph>",
+        "--graph-manifest", "<graph-manifest>",
+        "--private-report", "<private-report>",
+        "--policy", "<policy>",
+        "--input-lock", "<input-lock>",
+        "--output", "<empty-output-path>",
+        "--json"
+      ],
+      "model_calls": false,
+      "mutates_research_state": false,
+      "requires_private_inputs": true
+    },
+    {
+      "name": "test",
+      "purpose": "Run the public candidate test suite.",
+      "argv": ["uv", "run", "pytest"],
+      "model_calls": false,
+      "mutates_research_state": false,
+      "requires_private_inputs": false
+    },
+    {
+      "name": "search-synthetic-example",
+      "purpose": "Lexically search existing records in the bundled invented graph.",
+      "argv": [
+        "uv",
+        "run",
+        "research-map",
+        "search",
+        "indicator",
+        "--graph",
+        "reference_mapping_graph/synthetic-example/graph.json",
+        "--json"
+      ],
+      "model_calls": false,
+      "mutates_research_state": false,
+      "requires_private_inputs": false
+    },
+    {
+      "name": "explore-synthetic-example",
+      "purpose": "Resolve one stable atom and return its manifest-verified one-hop context.",
+      "argv": [
+        "uv",
+        "run",
+        "research-map",
+        "explore",
+        "--id",
+        "LIB-901:atom:indicator-response",
+        "--graph",
+        "reference_mapping_graph/synthetic-example/graph.json",
+        "--json"
+      ],
+      "model_calls": false,
+      "mutates_research_state": false,
+      "requires_private_inputs": false
+    },
+    {
+      "name": "verify-public-candidate",
+      "purpose": "Verify policy, schemas, links, hashes, file modes, and the synthetic graph.",
+      "argv": ["scripts/verify-public-release.sh", "."],
+      "model_calls": false,
+      "mutates_research_state": false,
+      "requires_private_inputs": false
+    }
+  ]
+}

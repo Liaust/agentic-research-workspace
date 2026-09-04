@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/superdeterminism/evidence-span-v0.1.schema.json",
+  "title": "Evidence span v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "source_id",
+    "asset_path",
+    "asset_sha256",
+    "locator",
+    "extraction",
+    "created_by"
+  ],
+  "properties": {
+    "schema_version": { "const": "evidence-span-v0.1" },
+    "id": { "type": "string", "pattern": "^E-[A-Z0-9]+-[0-9]{4,}$" },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3,}$" },
+    "asset_path": { "type": "string", "pattern": "^sources/library/" },
+    "asset_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["page_start", "page_end"],
+      "properties": {
+        "page_start": { "type": "integer", "minimum": 1 },
+        "page_end": { "type": "integer", "minimum": 1 },
+        "printed_pages": { "type": ["string", "null"] },
+        "section": { "type": ["string", "null"] },
+        "paragraph": { "type": ["string", "null"] },
+        "block_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "equation_label": { "type": ["string", "null"] },
+        "figure_or_table_label": { "type": ["string", "null"] },
+        "bounding_boxes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["page", "x", "y", "width", "height"],
+            "properties": {
+              "page": { "type": "integer", "minimum": 1 },
+              "x": { "type": "number", "minimum": 0 },
+              "y": { "type": "number", "minimum": 0 },
+              "width": { "type": "number", "exclusiveMinimum": 0 },
+              "height": { "type": "number", "exclusiveMinimum": 0 },
+              "coordinate_space": {
+                "type": "string",
+                "enum": ["pdf-points", "normalized-0-1", "pixels"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "excerpt": { "type": ["string", "null"] },
+    "content_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "run_id", "visually_checked"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["native-text", "ocr", "layout-parser", "visual", "manual"]
+        },
+        "tool": { "type": ["string", "null"] },
+        "tool_version": { "type": ["string", "null"] },
+        "run_id": { "type": "string", "minLength": 1 },
+        "visually_checked": { "type": "boolean" },
+        "quality_notes": { "type": ["string", "null"] }
+      }
+    },
+    "created_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor", "created_at"],
+      "properties": {
+        "actor": { "type": "string", "minLength": 1 },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

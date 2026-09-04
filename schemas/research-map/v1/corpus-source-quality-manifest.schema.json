@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/corpus-source-quality-manifest.schema.json",
+  "title": "Frozen quality-labelled provisional corpus",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "launch_plan_sha256",
+    "selection_plan_sha256",
+    "selection_policy",
+    "requested_source_ids",
+    "connectable_sources",
+    "structurally_invalid_sources",
+    "source_count",
+    "connectable_source_count",
+    "structurally_invalid_source_count",
+    "quality_label_counts",
+    "selected_origin_counts",
+    "record_count",
+    "edge_count",
+    "source_telemetry"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "corpus_source_quality_manifest" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "launch_plan_sha256": { "$ref": "#/$defs/sha256" },
+    "selection_plan_sha256": { "$ref": "#/$defs/sha256" },
+    "selection_policy": { "type": "string", "const": "quality_labelled_best_valid" },
+    "requested_source_ids": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "connectable_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/connectableSource" }
+    },
+    "structurally_invalid_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/invalidSource" }
+    },
+    "source_count": { "type": "integer", "minimum": 2 },
+    "connectable_source_count": { "type": "integer", "minimum": 0 },
+    "structurally_invalid_source_count": { "type": "integer", "minimum": 0 },
+    "quality_label_counts": { "$ref": "#/$defs/qualityLabelCounts" },
+    "selected_origin_counts": { "$ref": "#/$defs/selectedOriginCounts" },
+    "record_count": { "type": "integer", "minimum": 0 },
+    "edge_count": { "type": "integer", "minimum": 0 },
+    "source_telemetry": { "$ref": "#/$defs/telemetry" }
+  },
+  "$defs": {
+    "selectedOriginCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prior_completion_wip", "source_run_provisional"],
+      "properties": {
+        "prior_completion_wip": { "type": "integer", "minimum": 0 },
+        "source_run_provisional": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "qualityLabel": {
+      "type": "string",
+      "enum": [
+        "audited_passed",
+        "audited_with_findings",
+        "audit_interrupted",
+        "unaudited_provisional"
+      ]
+    },
+    "qualityLabelCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audited_passed",
+        "audited_with_findings",
+        "audit_interrupted",
+        "unaudited_provisional"
+      ],
+      "properties": {
+        "audited_passed": { "type": "integer", "minimum": 0 },
+        "audited_with_findings": { "type": "integer", "minimum": 0 },
+        "audit_interrupted": { "type": "integer", "minimum": 0 },
+        "unaudited_provisional": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_jobs_started",
+        "duration_seconds",
+        "worker_events_emitted",
+        "token_usage"
+      ],
+      "properties": {
+        "semantic_jobs_started": { "type": "integer", "minimum": 0 },
+        "duration_seconds": { "type": "number", "minimum": 0 },
+        "worker_events_emitted": { "type": "integer", "minimum": 0 },
+        "token_usage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["input_tokens", "cached_input_tokens", "output_tokens"],
+          "properties": {
+            "input_tokens": { "type": "integer", "minimum": 0 },
+            "cached_input_tokens": { "type": "integer", "minimum": 0 },
+            "output_tokens": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "connectableSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "quality_label",
+        "selected_origin",
+        "runtime_fallback_reason",
+        "selection_receipt_path",
+        "selection_receipt_sha256",
+        "source_state",
+        "dossier_path",
+        "dossier_sha256",
+        "dossier_bytes",
+        "graph_path",
+        "graph_sha256",
+        "record_count",
+        "edge_count",
+        "findings",
+        "findings_sha256",
+        "warnings",
+        "audit_telemetry",
+        "source_semantic_jobs_started"
+      ],
+      "properties": {
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "quality_label": { "$ref": "#/$defs/qualityLabel" },
+        "selected_origin": {
+          "type": "string",
+          "enum": ["prior_completion_wip", "source_run_provisional"]
+        },
+        "runtime_fallback_reason": { "type": ["string", "null"] },
+        "selection_receipt_path": { "type": "string", "minLength": 1 },
+        "selection_receipt_sha256": { "$ref": "#/$defs/sha256" },
+        "source_state": { "type": "string", "const": "calibration_graph_inserted" },
+        "dossier_path": { "type": "string", "minLength": 1 },
+        "dossier_sha256": { "$ref": "#/$defs/sha256" },
+        "dossier_bytes": { "type": "integer", "minimum": 1 },
+        "graph_path": { "type": "string", "minLength": 1 },
+        "graph_sha256": { "$ref": "#/$defs/sha256" },
+        "record_count": { "type": "integer", "minimum": 1 },
+        "edge_count": { "type": "integer", "minimum": 0 },
+        "findings": { "type": "array", "items": { "type": "object" } },
+        "findings_sha256": { "$ref": "#/$defs/sha256" },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "audit_telemetry": { "$ref": "#/$defs/telemetry" },
+        "source_semantic_jobs_started": { "type": "integer", "const": 0 }
+      }
+    },
+    "invalidSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "quality_label",
+        "failure_class",
+        "failure_reason",
+        "selected_origin",
+        "selection_receipt_sha256",
+        "warnings"
+      ],
+      "properties": {
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "quality_label": { "$ref": "#/$defs/qualityLabel" },
+        "failure_class": { "type": "string", "minLength": 1 },
+        "failure_reason": { "type": "string", "minLength": 1 },
+        "selected_origin": {
+          "type": "string",
+          "enum": ["prior_completion_wip", "source_run_provisional"]
+        },
+        "selection_receipt_sha256": { "$ref": "#/$defs/sha256" },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

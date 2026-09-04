@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/corpus-completion-report.schema.json",
+  "title": "Terminal corpus completion report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "state",
+    "launch_plan_sha256",
+    "source_count",
+    "eligible_source_count",
+    "excluded_source_count",
+    "cross_reference_batch_id",
+    "pair_count",
+    "uncovered_pair_count",
+    "semantic_jobs_started",
+    "worker_events_emitted",
+    "duration_seconds",
+    "token_usage",
+    "cross_reference_telemetry",
+    "source_failures",
+    "shard_failures",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "corpus_completion_report" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "state": { "type": "string", "enum": ["complete", "partial"] },
+    "launch_plan_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "source_count": { "type": "integer", "minimum": 2 },
+    "eligible_source_count": { "type": "integer", "minimum": 0 },
+    "excluded_source_count": { "type": "integer", "minimum": 0 },
+    "selection_policy": {
+      "type": "string",
+      "const": "quality_labelled_best_valid"
+    },
+    "quality_label_counts": { "$ref": "#/$defs/qualityLabelCounts" },
+    "selected_origin_counts": { "$ref": "#/$defs/selectedOriginCounts" },
+    "record_count": { "type": "integer", "minimum": 0 },
+    "edge_count": { "type": "integer", "minimum": 0 },
+    "relationship_count": { "type": "integer", "minimum": 0 },
+    "source_telemetry": { "$ref": "#/$defs/telemetry" },
+    "cross_reference_batch_id": {
+      "type": "string",
+      "pattern": "^xref_batch_[0-9a-f]{24}$"
+    },
+    "pair_count": { "type": "integer", "minimum": 1 },
+    "uncovered_pair_count": { "type": "integer", "minimum": 0 },
+    "semantic_jobs_started": { "type": "integer", "minimum": 0 },
+    "worker_events_emitted": { "type": "integer", "minimum": 0 },
+    "duration_seconds": { "type": "number", "minimum": 0 },
+    "token_usage": { "$ref": "#/$defs/tokenUsage" },
+    "cross_reference_telemetry": { "$ref": "#/$defs/telemetry" },
+    "source_failures": { "type": "array", "items": { "type": "object" } },
+    "shard_failures": { "type": "array", "items": { "type": "object" } },
+    "artifacts": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path", "sha256"],
+        "properties": {
+          "kind": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "required": [
+        "selection_policy",
+        "quality_label_counts",
+        "selected_origin_counts",
+        "record_count",
+        "edge_count",
+        "relationship_count",
+        "source_telemetry"
+      ]
+    },
+    {
+      "not": {
+        "anyOf": [
+          { "required": ["selection_policy"] },
+          { "required": ["quality_label_counts"] },
+          { "required": ["selected_origin_counts"] },
+          { "required": ["record_count"] },
+          { "required": ["edge_count"] },
+          { "required": ["relationship_count"] },
+          { "required": ["source_telemetry"] }
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "selectedOriginCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prior_completion_wip", "source_run_provisional"],
+      "properties": {
+        "prior_completion_wip": { "type": "integer", "minimum": 0 },
+        "source_run_provisional": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "qualityLabelCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audited_passed",
+        "audited_with_findings",
+        "audit_interrupted",
+        "unaudited_provisional"
+      ],
+      "properties": {
+        "audited_passed": { "type": "integer", "minimum": 0 },
+        "audited_with_findings": { "type": "integer", "minimum": 0 },
+        "audit_interrupted": { "type": "integer", "minimum": 0 },
+        "unaudited_provisional": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tokenUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_tokens", "cached_input_tokens", "output_tokens"],
+      "properties": {
+        "input_tokens": { "type": "integer", "minimum": 0 },
+        "cached_input_tokens": { "type": "integer", "minimum": 0 },
+        "output_tokens": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_jobs_started",
+        "duration_seconds",
+        "worker_events_emitted",
+        "token_usage"
+      ],
+      "properties": {
+        "semantic_jobs_started": { "type": "integer", "minimum": 0 },
+        "duration_seconds": { "type": "number", "minimum": 0 },
+        "worker_events_emitted": { "type": "integer", "minimum": 0 },
+        "token_usage": { "$ref": "#/$defs/tokenUsage" }
+      }
+    }
+  }
+}

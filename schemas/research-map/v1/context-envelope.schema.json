@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/context-envelope.schema.json",
+  "title": "Source-local endpoint context envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "source_id", "atom_id", "evidence_ids", "move_ids",
+    "thread_ids", "upstream_ids", "downstream_ids", "scope", "qualifications"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "source_id": { "type": "string" },
+    "atom_id": { "type": "string" },
+    "evidence_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "move_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "thread_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "upstream_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "downstream_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "scope": { "type": "string", "minLength": 1 },
+    "qualifications": { "type": "array", "items": { "type": "string" } }
+  }
+}

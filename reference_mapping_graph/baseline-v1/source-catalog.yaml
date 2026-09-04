@@ -1,0 +1,523 @@
+schema_version: '1.0'
+catalog_id: public-source-metadata-baseline-v1
+scope: bibliographic_metadata_only
+sources:
+- source_id: LIB-001
+  title: A Mathematical Framework for Operational Fine Tunings
+  creators:
+  - Lorenzo Catani
+  - Matthew S. Leifer
+  year: 2023
+  type: article
+  language: English
+  rights_category: recorded_cc_by_4_0
+- source_id: LIB-002
+  title: A Quantum Field Theory as Emergent Description of Constrained Supersymmetric Classical Dynamics
+  creators:
+  - Hans-Thomas Elze
+  year: 2005
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-003
+  title: A Toy Model for Local and Deterministic Wave-function Collapse
+  creators:
+  - Sandro Donadi
+  - Sabine Hossenfelder
+  year: 2021
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-004
+  title: Arbitrarily Small Amount of Measurement Independence Is Sufficient to Manifest Quantum Nonlocality
+  creators:
+  - Gilles Pütz
+  - Denis Rosset
+  - Tomer Jack Barnea
+  - Yeong-Cherng Liang
+  - Nicolas Gisin
+  year: 2014
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-005
+  title: Are Quantum-Classical Hybrids Compatible with Ontological Cellular Automata?
+  creators:
+  - Hans-Thomas Elze
+  year: 2022
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-006
+  title: Bell's Theorem Does Not Eliminate Fully Causal Hidden Variables
+  creators:
+  - Carl H. Brans
+  year: 1988
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-007
+  title: Causal Networks and Freedom of Choice in Bell's Theorem
+  creators:
+  - Rafael Chaves
+  - George Moreno
+  - Emanuele Polino
+  - Davide Poderini
+  - Iris Agresti
+  - Alessia Suprano
+  - Mariana R. Barros
+  - Gonzalo Carvacho
+  - Elie Wolfe
+  - Askery Canabarro
+  - Robert W. Spekkens
+  - Fabio Sciarrino
+  year: 2021
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-008
+  title: Cosmic Bell Test Using Random Measurement Settings from High-Redshift Quasars
+  creators:
+  - Dominik Rauch
+  - Johannes Handsteiner
+  - Armin Hochrainer
+  - Jason Gallicchio
+  - Andrew S. Friedman
+  - Calvin Leung
+  - Bo Liu
+  - Lukas Bulla
+  - Sebastian Ecker
+  - Fabian Steinlechner
+  - Rupert Ursin
+  - Beili Hu
+  - David Leon
+  - Chris Benn
+  - Adriano Ghedina
+  - Massimo Cecconi
+  - Alan H. Guth
+  - David I. Kaiser
+  - Thomas Scheidl
+  - Anton Zeilinger
+  year: 2018
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-009
+  title: Determinism and a Supersymmetric Classical Model of Quantum Fields
+  creators:
+  - Hans-Thomas Elze
+  year: 2005
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-010
+  title: Determinism Beneath Quantum Mechanics
+  creators:
+  - Gerard 't Hooft
+  year: 2002
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-011
+  title: 'Deterministic Quantum Mechanics: the Mathematical Equations'
+  creators:
+  - Gerard 't Hooft
+  year: 2020
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-012
+  title: Emergent Quantum Mechanics and Emergent Symmetries
+  creators:
+  - Gerard 't Hooft
+  year: 2007
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-013
+  title: Experimental Test of Measurement Dependent Local Bell Inequality with Human Free Will
+  creators:
+  - Yang Liu
+  - Xiao Yuan
+  - Cheng Wu
+  - Weijun Zhang
+  - Jian-Yu Guan
+  - Jiaqiang Zhong
+  - Hao Li
+  - Ming-Han Li
+  - Carlos Abellan
+  - Morgan W. Mitchell
+  - Sheng-Cai Shi
+  - Jingyun Fan
+  - Lixing You
+  - Zhen Wang
+  - Xiongfeng Ma
+  - Qiang Zhang
+  - Jian-Wei Pan
+  year: 2018
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-014
+  title: Explicit Construction of Local Hidden Variables for Any Quantum Theory Up to Any Desired Accuracy
+  creators:
+  - Gerard 't Hooft
+  year: 2021
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-015
+  title: 'Extending Bell''s Theorem: Nonlocality via Measurement Dependence'
+  creators:
+  - Guido Bacciagaluppi
+  - Ronnie Hermens
+  - Gijs Leegwater
+  year: 2026
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-016
+  title: Fast Vacuum Fluctuations and the Emergence of Quantum Mechanics
+  creators:
+  - Gerard 't Hooft
+  year: 2021
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-017
+  title: Hilbert Space in Deterministic Theories
+  creators:
+  - Gerard 't Hooft
+  year: 2009
+  type: lecture manuscript
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-018
+  title: 'Hilbert Space Structure in Classical Mechanics: (I)'
+  creators:
+  - E. Deotto
+  - E. Gozzi
+  - D. Mauro
+  year: 2003
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-019
+  title: How a Wave Function Can Collapse Without Violating Schrodinger's Equation, and How to Understand
+    Born's Rule
+  creators:
+  - Gerard 't Hooft
+  year: 2012
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-020
+  title: How Much Measurement Independence Is Needed in Order to Demonstrate Nonlocality?
+  creators:
+  - Jonathan Barrett
+  - Nicolas Gisin
+  year: 2011
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-021
+  title: Local Deterministic Model of Singlet State Correlations
+  creators:
+  - Michael J. W. Hall
+  year: 2010
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-022
+  title: Loopholes in Bell Inequality Tests of Local Realism
+  creators:
+  - Jan-Ake Larsson
+  year: 2014
+  type: review article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-023
+  title: Measurement Dependent Locality
+  creators:
+  - Gilles Pütz
+  - Nicolas Gisin
+  year: 2016
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-024
+  title: No Extension of Quantum Theory Can Have Improved Predictive Power
+  creators:
+  - Roger Colbeck
+  - Renato Renner
+  year: 2011
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-025
+  title: Note on the Existence Theorem in 'Emergent Quantum Mechanics and Emergent Symmetries'
+  creators:
+  - Hans-Thomas Elze
+  year: 2008
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-026
+  title: Ontology in Quantum Mechanics
+  creators:
+  - Gerard 't Hooft
+  year: 2021
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-027
+  title: Path Integral Approach to 't Hooft's Derivation of Quantum from Classical Physics
+  creators:
+  - Massimo Blasone
+  - Petr Jizba
+  - Hagen Kleinert
+  year: 2005
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-028
+  title: 'Quantum Behavior of Deterministic Systems with Information Loss: Path Integral Approach'
+  creators:
+  - Massimo Blasone
+  - Petr Jizba
+  - Hagen Kleinert
+  year: 2005
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-029
+  title: Quantum Mechanics and Determinism
+  creators:
+  - Gerard 't Hooft
+  year: 2001
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-030
+  title: Quantum Models as Classical Cellular Automata
+  creators:
+  - Hans-Thomas Elze
+  year: 2017
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-031
+  title: Relating the Quantum Mechanics of Discrete Systems to Standard Canonical Quantum Mechanics
+  creators:
+  - Gerard 't Hooft
+  year: 2012
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-032
+  title: Relaxed Bell Inequalities and Kochen-Specker Theorems
+  creators:
+  - Michael J. W. Hall
+  year: 2011
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-033
+  title: Relaxed Bell Inequalities with Arbitrary Measurement Dependence for Each Observer
+  creators:
+  - Andrew S. Friedman
+  - Alan H. Guth
+  - Michael J. W. Hall
+  - David I. Kaiser
+  - Jason Gallicchio
+  year: 2019
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-034
+  title: Relaxed Bell Inequality as a Trade-off Relation Between Measurement Dependence and Hiddenness
+  creators:
+  - Gen Kimura
+  - Yugo Susuki
+  - Kei Morisue
+  year: 2023
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-035
+  title: Rethinking Superdeterminism
+  creators:
+  - Sabine Hossenfelder
+  - Tim N. Palmer
+  year: 2019
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-036
+  title: Superdeterminism Without Conspiracy
+  creators:
+  - Tim N. Palmer
+  year: 2024
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-037
+  title: 'Superdeterministic Hidden-Variables Models I: Nonequilibrium and Signalling'
+  creators:
+  - Indrajit Sen
+  - Antony Valentini
+  year: 2020
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-038
+  title: 'Superdeterministic Hidden-Variables Models II: Conspiracy'
+  creators:
+  - Indrajit Sen
+  - Antony Valentini
+  year: 2020
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-039
+  title: 'Supermeasured: Violating Bell-Statistical Independence Without Violating Physical Statistical
+    Independence'
+  creators:
+  - Jonte R. Hance
+  - Sabine Hossenfelder
+  - Tim N. Palmer
+  year: 2022
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-040
+  title: Symmetry Aspects in Emergent Quantum Mechanics
+  creators:
+  - Hans-Thomas Elze
+  year: 2009
+  type: proceedings article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-041
+  title: 'Testing Bell''s Inequality with Cosmic Photons: Closing the Setting-Independence Loophole'
+  creators:
+  - Jason Gallicchio
+  - Andrew S. Friedman
+  - David I. Kaiser
+  year: 2014
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-042
+  title: The Cellular Automaton Interpretation of Quantum Mechanics
+  creators:
+  - Gerard 't Hooft
+  year: 2015
+  type: book manuscript
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-043
+  title: The Communication Cost of Simulating Bell Correlations
+  creators:
+  - Benjamin F. Toner
+  - Dave Bacon
+  year: 2003
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-044
+  title: On the Free-Will Postulate in Quantum Mechanics
+  creators:
+  - Gerard 't Hooft
+  year: 2007
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-045
+  title: The Hidden Ontological Variable in Quantum Harmonic Oscillators
+  creators:
+  - Gerard 't Hooft
+  year: 2024
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-046
+  title: 'The Lesson of Causal Discovery Algorithms for Quantum Correlations: Causal Explanations of Bell-Inequality
+    Violations Require Fine-Tuning'
+  creators:
+  - Christopher J. Wood
+  - Robert W. Spekkens
+  year: 2014
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-047
+  title: The Linearity of Quantum Mechanics from the Perspective of Hamiltonian Cellular Automata
+  creators:
+  - Hans-Thomas Elze
+  year: 2014
+  type: proceedings article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-048
+  title: The Mathematical Basis for Deterministic Quantum Mechanics
+  creators:
+  - Gerard 't Hooft
+  year: 2006
+  type: proceedings article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-049
+  title: The Significance of Measurement Independence for Bell Inequalities and Locality
+  creators:
+  - Michael J. W. Hall
+  year: 2015
+  type: book chapter manuscript
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-050
+  title: Trade-off Relations Between Measurement Dependence and Hidden Information for Factorizable Hidden
+    Variable Models
+  creators:
+  - Ryo Takakura
+  - Kei Morisue
+  - Issei Watanabe
+  - Gen Kimura
+  year: 2025
+  type: article
+  language: English
+  rights_category: recorded_cc_by_4_0
+- source_id: LIB-051
+  title: Universal Bound on the Cardinality of Local Hidden Variables in Networks
+  creators:
+  - Denis Rosset
+  - Nicolas Gisin
+  - Elie Wolfe
+  year: 2017
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-052
+  title: Violations of Locality and Free Choice Are Equivalent Resources in Bell Experiments
+  creators:
+  - Pawel Blasiak
+  - Emmanuel M. Pothos
+  - James M. Yearsley
+  - Christoph Gallus
+  - Ewa Borsuk
+  year: 2021
+  type: article
+  language: English
+  rights_category: redistribution_not_assessed
+- source_id: LIB-053
+  title: Trade-off relations between measurement dependence and hiddenness for separable hidden variable
+    models
+  creators:
+  - Ryo Takakura
+  - Kei Morisue
+  - Issei Watanabe
+  - Gen Kimura
+  year: 2022
+  type: preprint
+  language: English
+  rights_category: redistribution_not_assessed

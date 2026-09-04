@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/cross-reference-recovery-status.schema.json",
+  "title": "Terminal failed-shard recovery status",
+  "type": "object",
+  "required": ["schema_version", "kind", "recovery_id", "origin_run_id", "state", "launch_plan_sha256", "policy", "shard_counts", "pair_counts", "peak_concurrency", "shards"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "cross_reference_recovery_status" },
+    "recovery_id": { "type": "string" },
+    "origin_run_id": { "type": "string" },
+    "state": { "type": "string", "enum": ["shards_complete", "complete", "partial"] },
+    "launch_plan_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "policy": { "type": "object" },
+    "shard_counts": { "type": "object" },
+    "pair_counts": { "type": "object" },
+    "peak_concurrency": { "type": "integer", "minimum": 0, "maximum": 2 },
+    "shards": { "type": "array" },
+    "graph": { "type": "object" },
+    "report": { "type": "object" },
+    "pair_partitions": { "type": "object" },
+    "counts": { "type": "object" },
+    "telemetry": { "type": "object" }
+  },
+  "additionalProperties": false
+}

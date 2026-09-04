@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/public-release/v1/commands.schema.json",
+  "title": "Public human-agent command catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "interface", "commands"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "interface": {"const": "research-map"},
+    "commands": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/command"},
+      "allOf": [
+        {"contains": {"properties": {"name": {"const": "build-public-release"}}}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "test"}}}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "search-synthetic-example"}}}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "explore-synthetic-example"}}}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "verify-public-candidate"}}}, "minContains": 1, "maxContains": 1}
+      ]
+    }
+  },
+  "$defs": {
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "purpose",
+        "argv",
+        "model_calls",
+        "mutates_research_state",
+        "requires_private_inputs"
+      ],
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "purpose": {"type": "string", "minLength": 1},
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "model_calls": {"type": "boolean"},
+        "mutates_research_state": {"type": "boolean"},
+        "requires_private_inputs": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/public-release/v1/publication-report.schema.json",
+  "title": "Public projection publication report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "decision",
+    "public_scope",
+    "admitted",
+    "withheld",
+    "private_inputs",
+    "checks",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "release_id": {"const": "public-experimental-repository-baseline-v1"},
+    "decision": {"const": "candidate_requires_clean_history_audit"},
+    "public_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data",
+        "license",
+        "dataset_license",
+        "third_party_rights",
+        "external_actions_authorized"
+      ],
+      "properties": {
+        "data": {"const": "aggregate_results_plus_synthetic_demonstration"},
+        "license": {"const": "Apache-2.0"},
+        "dataset_license": {"const": "none_granted"},
+        "third_party_rights": {"const": "separate"},
+        "external_actions_authorized": {"const": false}
+      }
+    },
+    "admitted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file_count", "source_fields", "graph_fields"],
+      "properties": {
+        "file_count": {"type": "integer", "minimum": 1},
+        "source_fields": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "graph_fields": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "withheld": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph_fields",
+        "source_assets",
+        "evidence_bearing_graph",
+        "private_project_history"
+      ],
+      "properties": {
+        "graph_fields": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "source_assets": {"type": "integer", "minimum": 0},
+        "evidence_bearing_graph": {"const": true},
+        "private_project_history": {"const": true}
+      }
+    },
+    "private_inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "private_repository_commit",
+        "projection_repository_commit",
+        "graph_sha256",
+        "graph_manifest_sha256",
+        "private_report_sha256",
+        "source_integrity_sha256"
+      ],
+      "properties": {
+        "private_repository_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "projection_repository_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "graph_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "graph_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "private_report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_integrity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "checks": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"const": "pass"}
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

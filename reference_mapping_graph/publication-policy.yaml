@@ -1,0 +1,87 @@
+schema_version: "1.0"
+policy_id: public-experimental-repository-baseline-v1
+repository_topology: separate_clean_history_projection
+public_data_scope: aggregate_results_plus_synthetic_demonstration
+original_code_and_documentation_license: Apache-2.0
+dataset_license: none_granted
+third_party_rights: separate
+external_actions_authorized: false
+admitted_source_fields:
+  - library_id
+  - identity.title
+  - identity.creators
+  - identity.year
+  - identity.type
+  - identity.language
+  - normalized_rights_category
+admitted_graph_fields:
+  - aggregate_counts
+  - aggregate_source_quality_label_counts
+  - aggregate_relationship_kind_counts
+withheld_graph_fields:
+  - nodes
+  - endpoints
+  - source_pairs
+  - statements
+  - evidence_spans
+  - rationales
+  - scopes
+  - qualifications
+forbidden_path_segments:
+  - .basecamp
+  - .cache
+  - .git
+  - .project
+  - build
+  - sources
+  - vault
+forbidden_suffixes:
+  - .pdf
+  - .pyc
+  - .pyo
+  - .sqlite
+  - .sqlite3
+  - .duckdb
+  - .pem
+  - .key
+  - .p12
+  - .pfx
+forbidden_name_patterns:
+  - .env*
+public_path_allowlist:
+  - .gitattributes
+  - .gitignore
+  - README.md
+  - LICENSE
+  - NOTICE
+  - CITATION.cff
+  - CONTRIBUTING.md
+  - SECURITY.md
+  - THIRD_PARTY_RIGHTS.md
+  - pyproject.toml
+  - uv.lock
+  - src/research_map/**
+  - schemas/**
+  - protocols/research-map/**
+  - docs/architecture/**
+  - docs/experiments/**
+  - docs/limitations/**
+  - docs/public-roadmap/**
+  - docs/publication/PUBLICATION_POLICY.md
+  - reference_mapping_graph/README.md
+  - reference_mapping_graph/commands.json
+  - reference_mapping_graph/publication-policy.yaml
+  - reference_mapping_graph/rights-inventory.yaml
+  - reference_mapping_graph/baseline-v1/README.md
+  - reference_mapping_graph/baseline-v1/input-lock.json
+  - reference_mapping_graph/baseline-v1/aggregate-metrics.json
+  - reference_mapping_graph/baseline-v1/relationship-summary.json
+  - reference_mapping_graph/baseline-v1/source-catalog.yaml
+  - reference_mapping_graph/baseline-v1/publication-report.json
+  - reference_mapping_graph/baseline-v1/manifest.json
+  - reference_mapping_graph/synthetic-example/README.md
+  - reference_mapping_graph/synthetic-example/graph.json
+  - reference_mapping_graph/synthetic-example/manifest.json
+  - reference_mapping_graph/synthetic-example/relationships/LIB-901--LIB-902/relationships.md
+  - scripts/verify-public-release.sh
+  - tests/public_release_candidate/**

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/orientation-proposal.schema.json",
+  "title": "Complete-paper orientation and landmark plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "source_id", "source_summary", "scopes", "landmarks",
+    "batches", "thread_plan", "type_gaps", "manual_review", "warnings"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+    "source_summary": { "type": "string", "minLength": 1 },
+    "scopes": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["scope_id", "label", "page_start", "page_end", "rationale", "thread_hints"],
+        "properties": {
+          "scope_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "label": { "type": "string", "minLength": 1 },
+          "page_start": { "type": "integer", "minimum": 1 },
+          "page_end": { "type": "integer", "minimum": 1 },
+          "rationale": { "type": "string", "minLength": 1 },
+          "thread_hints": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    },
+    "landmarks": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": [
+          "landmark_id", "label", "kind", "page_start", "page_end",
+          "rationale", "thread_hints"
+        ],
+        "properties": {
+          "landmark_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "label": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "page_start": { "type": "integer", "minimum": 1 },
+          "page_end": { "type": "integer", "minimum": 1 },
+          "rationale": { "type": "string", "minLength": 1 },
+          "thread_hints": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    },
+    "batches": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["batch_id", "label", "scope_ids", "landmark_ids", "rationale"],
+        "properties": {
+          "batch_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "label": { "type": "string", "minLength": 1 },
+          "scope_ids": {
+            "type": "array", "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "landmark_ids": {
+            "type": "array", "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "thread_plan": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["thread_id", "label", "kind", "scope_ids", "landmark_ids", "rationale"],
+        "properties": {
+          "thread_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "label": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "scope_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "landmark_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "type_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["slug", "record_level", "rationale"],
+        "properties": {
+          "slug": { "type": "string", "minLength": 1 },
+          "record_level": { "type": "string", "enum": ["atom", "move", "thread"] },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "manual_review": { "type": "boolean" },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}

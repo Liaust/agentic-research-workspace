@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.local/research-map/v1/cross-reference-edge-audit-benchmark.schema.json",
+  "title": "Cross-reference edge quality audit benchmark",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "benchmark_id", "audited_relationships", "warnings"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "benchmark_id": {"type": "string", "minLength": 1},
+    "audited_relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relationship_id",
+          "scores",
+          "disposition",
+          "relation_type_assessment",
+          "rationale",
+          "qualifications",
+          "flags"
+        ],
+        "properties": {
+          "relationship_id": {"type": "string", "pattern": "^xref_rel_[0-9a-f]+$"},
+          "scores": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence_grounding",
+              "relation_type_fit",
+              "scope_assumption_fit",
+              "research_utility",
+              "argumentative_importance",
+              "distinctiveness"
+            ],
+            "properties": {
+              "evidence_grounding": {"type": "integer", "minimum": 0, "maximum": 4},
+              "relation_type_fit": {"type": "integer", "minimum": 0, "maximum": 4},
+              "scope_assumption_fit": {"type": "integer", "minimum": 0, "maximum": 4},
+              "research_utility": {"type": "integer", "minimum": 0, "maximum": 4},
+              "argumentative_importance": {"type": "integer", "minimum": 0, "maximum": 4},
+              "distinctiveness": {"type": "integer", "minimum": 0, "maximum": 4}
+            }
+          },
+          "disposition": {
+            "type": "string",
+            "enum": ["strong", "usable", "weak", "misleading", "manual_review"]
+          },
+          "relation_type_assessment": {
+            "type": "string",
+            "enum": ["fit", "adjacent", "wrong", "uncertain"]
+          },
+          "rationale": {"type": "string", "minLength": 1},
+          "qualifications": {"type": "array", "items": {"type": "string"}},
+          "flags": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/public-release/v1/input-lock.schema.json",
+  "title": "Public release private input lock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "repository_topology",
+    "public_data_scope",
+    "external_actions_authorized",
+    "private_repository_commit",
+    "baseline",
+    "source_integrity",
+    "counts"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "repository_topology": {"const": "separate_clean_history_projection"},
+    "public_data_scope": {"const": "aggregate_results_plus_synthetic_demonstration"},
+    "external_actions_authorized": {"const": false},
+    "private_repository_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["salvage_id", "graph", "graph_manifest", "private_report"],
+      "properties": {
+        "salvage_id": {"type": "string", "minLength": 1},
+        "graph": {"$ref": "#/$defs/fileDescriptor"},
+        "graph_manifest": {"$ref": "#/$defs/fileDescriptor"},
+        "private_report": {"$ref": "#/$defs/fileDescriptor"}
+      }
+    },
+    "source_integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "sha256"],
+      "properties": {
+        "algorithm": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registered_sources",
+        "registered_assets",
+        "sources_in_baseline",
+        "records",
+        "evidence_records",
+        "atoms",
+        "moves",
+        "threads",
+        "source_local_edges",
+        "cross_source_relationships",
+        "inspected_source_pairs",
+        "unresolved_source_pairs"
+      ],
+      "properties": {
+        "registered_sources": {"$ref": "#/$defs/count"},
+        "registered_assets": {"$ref": "#/$defs/count"},
+        "sources_in_baseline": {"$ref": "#/$defs/count"},
+        "records": {"$ref": "#/$defs/count"},
+        "evidence_records": {"$ref": "#/$defs/count"},
+        "atoms": {"$ref": "#/$defs/count"},
+        "moves": {"$ref": "#/$defs/count"},
+        "threads": {"$ref": "#/$defs/count"},
+        "source_local_edges": {"$ref": "#/$defs/count"},
+        "cross_source_relationships": {"$ref": "#/$defs/count"},
+        "inspected_source_pairs": {"$ref": "#/$defs/count"},
+        "unresolved_source_pairs": {"$ref": "#/$defs/count"}
+      }
+    }
+  },
+  "$defs": {
+    "count": {"type": "integer", "minimum": 0},
+    "fileDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "size_bytes"],
+      "properties": {
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "size_bytes": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

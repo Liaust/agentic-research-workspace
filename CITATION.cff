@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using this metadata."
+title: "Agentic Research Workspace"
+type: software
+authors:
+  - family-names: Miranda
+    given-names: Leonardo
+version: 0.1.0
+license: Apache-2.0
+abstract: >-
+  Experimental agent-native workspace for the research lifecycle, beginning
+  with evidence-first literature mapping.
+keywords:
+  - research mapping
+  - scientific literature
+  - provenance
+  - research workflow
+  - agentic research

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/job-result.schema.json",
+  "title": "Research map bounded job result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "job_id", "source_id", "status", "proposal"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "job_id": { "type": "string", "minLength": 1 },
+    "source_id": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["succeeded", "failed"] },
+    "proposal": { "type": ["object", "null"] }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.local/research-map/v1/cross-reference-benchmark-report.schema.json",
+  "title": "Compiled cross-reference quality benchmark metrics",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_version",
+    "benchmark_id",
+    "classification",
+    "admission",
+    "edge_quality_audit",
+    "coverage_probe",
+    "cost",
+    "reproducibility"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "contract_version": {"type": "string", "const": "cross-reference-quality-v1"},
+    "benchmark_id": {"type": "string", "minLength": 1},
+    "classification": {"type": "string", "const": "model_assisted_calibration_evidence"},
+    "admission": {"type": "object"},
+    "edge_quality_audit": {"type": "object"},
+    "coverage_probe": {"type": "object"},
+    "cost": {"type": "object"},
+    "reproducibility": {"type": "object"}
+  }
+}

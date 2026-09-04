@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/corpus-eligibility-manifest.schema.json",
+  "title": "Frozen corpus cross-reference eligibility",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "launch_plan_sha256",
+    "requested_source_ids",
+    "eligible_sources",
+    "excluded_sources",
+    "eligible_source_count",
+    "excluded_source_count",
+    "semantic_jobs_started",
+    "peak_audit_concurrency"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "kind": { "type": "string", "const": "corpus_eligibility_manifest" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "launch_plan_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "requested_source_ids": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^LIB-[0-9]{3}$" }
+    },
+    "eligible_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/eligibleSource" }
+    },
+    "excluded_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/excludedSource" }
+    },
+    "eligible_source_count": { "type": "integer", "minimum": 0 },
+    "excluded_source_count": { "type": "integer", "minimum": 0 },
+    "semantic_jobs_started": { "type": "integer", "minimum": 0 },
+    "peak_audit_concurrency": { "type": "integer", "minimum": 0, "maximum": 2 }
+  },
+  "$defs": {
+    "eligibleSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "terminal_audit_state",
+        "dossier_path",
+        "dossier_sha256",
+        "dossier_bytes",
+        "graph_path",
+        "graph_sha256",
+        "record_count",
+        "edge_count",
+        "duration_seconds",
+        "token_usage",
+        "warnings"
+      ],
+      "properties": {
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "terminal_audit_state": { "type": "string", "const": "graph_inserted" },
+        "dossier_path": { "type": "string", "minLength": 1 },
+        "dossier_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "dossier_bytes": { "type": "integer", "minimum": 1 },
+        "graph_path": { "type": "string", "minLength": 1 },
+        "graph_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "record_count": { "type": "integer", "minimum": 1 },
+        "edge_count": { "type": "integer", "minimum": 0 },
+        "duration_seconds": { "type": "number", "minimum": 0 },
+        "token_usage": { "$ref": "#/$defs/tokenUsage" },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "excludedSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "terminal_audit_state",
+        "failure_class",
+        "failure_reason",
+        "duration_seconds",
+        "token_usage",
+        "warnings"
+      ],
+      "properties": {
+        "source_id": { "type": "string", "pattern": "^LIB-[0-9]{3}$" },
+        "terminal_audit_state": { "type": "string", "minLength": 1 },
+        "failure_class": { "type": "string", "minLength": 1 },
+        "failure_reason": { "type": "string", "minLength": 1 },
+        "duration_seconds": { "type": "number", "minimum": 0 },
+        "token_usage": { "$ref": "#/$defs/tokenUsage" },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tokenUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_tokens", "cached_input_tokens", "output_tokens"],
+      "properties": {
+        "input_tokens": { "type": "integer", "minimum": 0 },
+        "cached_input_tokens": { "type": "integer", "minimum": 0 },
+        "output_tokens": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.example/research-map/v1/inspection-outcome.schema.json",
+  "title": "Terminal inspection outcome for one discovery candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "candidate_id", "outcome", "disposition_reason", "relationship"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "candidate_id": { "type": "string", "pattern": "^xref_candidate_[0-9a-f]{24}$" },
+    "outcome": {
+      "enum": [
+        "relationship", "not_usefully_connected", "insufficient_extraction",
+        "manual_review_candidate"
+      ]
+    },
+    "disposition_reason": { "type": "string", "minLength": 1 },
+    "relationship": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "object" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "outcome": { "const": "relationship" } }, "required": ["outcome"] },
+      "then": { "properties": { "relationship": { "type": "object" } } },
+      "else": { "properties": { "relationship": { "type": "null" } } }
+    }
+  ]
+}

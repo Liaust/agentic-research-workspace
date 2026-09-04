@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://liaust.local/research-map/v1/focused-cross-reference-evaluation.schema.json",
+  "title": "Focused cross-reference calibration evaluation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "calibration_id",
+    "proposal_audits",
+    "reference_matches",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "calibration_id": {"type": "string", "minLength": 1},
+    "proposal_audits": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/proposalAudit"}
+    },
+    "reference_matches": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/referenceMatch"}
+    },
+    "warnings": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_grounding",
+        "relation_type_fit",
+        "scope_assumption_fit",
+        "research_utility",
+        "argumentative_importance",
+        "distinctiveness"
+      ],
+      "properties": {
+        "evidence_grounding": {"type": "integer", "minimum": 0, "maximum": 4},
+        "relation_type_fit": {"type": "integer", "minimum": 0, "maximum": 4},
+        "scope_assumption_fit": {"type": "integer", "minimum": 0, "maximum": 4},
+        "research_utility": {"type": "integer", "minimum": 0, "maximum": 4},
+        "argumentative_importance": {"type": "integer", "minimum": 0, "maximum": 4},
+        "distinctiveness": {"type": "integer", "minimum": 0, "maximum": 4}
+      }
+    },
+    "proposalAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposal_key",
+        "scores",
+        "disposition",
+        "relation_type_assessment",
+        "recommended_relation_type",
+        "ontology_gap_label",
+        "rationale",
+        "qualifications",
+        "flags"
+      ],
+      "properties": {
+        "proposal_key": {
+          "type": "string",
+          "pattern": "^focus_rel_[0-9a-f]{24}$"
+        },
+        "scores": {"$ref": "#/$defs/scores"},
+        "disposition": {
+          "type": "string",
+          "enum": ["strong", "usable", "weak", "misleading", "manual_review"]
+        },
+        "relation_type_assessment": {
+          "type": "string",
+          "enum": ["fit", "adjacent", "wrong", "ontology_gap", "uncertain"]
+        },
+        "recommended_relation_type": {
+          "type": "string",
+          "enum": [
+            "current_type_is_best",
+            "potential_same_referent",
+            "potential_same_definition",
+            "potential_equivalence",
+            "potential_support",
+            "potential_qualification",
+            "potential_tension",
+            "potential_contradiction",
+            "potential_dependency",
+            "no_current_type_fits",
+            "uncertain"
+          ]
+        },
+        "ontology_gap_label": {"type": "string"},
+        "rationale": {"type": "string", "minLength": 1},
+        "qualifications": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "flags": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "referenceMatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_key",
+        "match_quality",
+        "matched_proposal_keys",
+        "match_kind",
+        "rationale"
+      ],
+      "properties": {
+        "candidate_key": {"type": "string", "minLength": 1},
+        "match_quality": {"type": "integer", "minimum": 0, "maximum": 4},
+        "matched_proposal_keys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^focus_rel_[0-9a-f]{24}$"
+          }
+        },
+        "match_kind": {
+          "type": "string",
+          "enum": ["exact_endpoint", "semantic_near", "partial", "none"]
+        },
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

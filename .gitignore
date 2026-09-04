@@ -1,0 +1,35 @@
+.DS_Store
+
+# Local reusable scaffold clone. The adapted project control plane is copied
+# into .project/; this nested Git repository is not part of the product tree.
+/ai-dev-pack/
+
+# Original source bytes stay local. Their identity and hashes live in the
+# adjacent source.yaml records.
+/sources/library/**/*.pdf
+
+# These were copied only to preserve the legacy run. They are not extraction
+# state for this project.
+/sources/library/**/reading/
+
+# Generated indexes, caches, and projections are reproducible outputs.
+/.cache/
+/build/
+/dist/
+/indexes/
+.coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+htmlcov/
+__pycache__/
+*.py[cod]
+*.sqlite
+*.sqlite3
+*.duckdb
+
+# Local configuration and secrets.
+.env
+.env.*
+!.env.example
