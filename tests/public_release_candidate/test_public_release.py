@@ -816,6 +816,34 @@ def test_candidate_scan_rejects_exact_registered_text_asset(tmp_path: Path) -> N
         )
 
 
+@pytest.mark.parametrize(
+    "relative",
+    [
+        "docs/images/dogfood/corpus-overview.png",
+        "docs/images/dogfood/record-graph.png",
+        "docs/images/dogfood/tension-lens.png",
+        "docs/images/dogfood/source-detail.png",
+    ],
+)
+def test_candidate_scan_accepts_only_exact_documentation_images(
+    tmp_path: Path,
+    relative: str,
+) -> None:
+    source = Path(__file__).parents[2] / relative
+    candidate = tmp_path / "candidate"
+    target = candidate / relative
+    target.parent.mkdir(parents=True)
+    shutil.copyfile(source, target)
+
+    public_release_module._scan_candidate_content(candidate)
+
+    altered = bytearray(target.read_bytes())
+    altered[-1] ^= 1
+    target.write_bytes(altered)
+    with pytest.raises(PublicReleaseValidationError, match="image fingerprint differs"):
+        public_release_module._scan_candidate_content(candidate)
+
+
 def test_build_rejects_base64_encoded_registered_asset(tmp_path: Path) -> None:
     fixture = _release_fixture(tmp_path)
     asset = next((fixture.asset_root / "sources/library").glob("*/*.pdf"))
@@ -2499,6 +2527,10 @@ def _release_fixture(tmp_path: Path) -> ReleaseFixture:
             "protocols/research-map/**",
             "docs/architecture/**",
             "docs/experiments/**",
+            "docs/images/dogfood/corpus-overview.png",
+            "docs/images/dogfood/record-graph.png",
+            "docs/images/dogfood/tension-lens.png",
+            "docs/images/dogfood/source-detail.png",
             "docs/limitations/**",
             "docs/public-roadmap/**",
             "docs/publication/PUBLICATION_POLICY.md",

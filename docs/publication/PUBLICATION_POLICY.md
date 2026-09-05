@@ -8,7 +8,9 @@ history.
 ## Accepted boundary
 
 - Topology: one separate clean-history public projection.
-- Public data: aggregate corpus results and a synthetic demonstration only.
+- Public data: aggregate corpus results and a synthetic demonstration only;
+  four explicitly allowlisted screenshots document the private dogfood
+  interface without releasing its underlying data.
 - Original code and documentation: Apache-2.0.
 - Third-party sources and source-derived datasets: no license is granted.
 - External actions: repository creation, visibility changes, pushes, releases,
@@ -32,6 +34,7 @@ if that projection revision or its working tree changes during construction.
 | corpus graph | aggregate relationship-kind counts | admit | Aggregate experimental result; no endpoints or topology. |
 | corpus graph | nodes, endpoints, statements, evidence spans, rationales, scopes, qualifications, source pairs | withhold | Evidence-bearing or topology-bearing derived dataset. |
 | project tree | paths named by the publication allowlist | admit after scanning | Original code, schemas, protocols, tests, and public documentation. |
+| documentation screenshots | four named PNG files under `docs/images/dogfood/` | admit after scanning | Project-owner-supplied interface illustrations; the two screenshots containing a source page show only registered CC-BY 4.0 source `LIB-001`. No underlying graph or source asset is copied. |
 | project tree | `.project`, `.basecamp`, `sources`, `vault`, caches, build output, databases, PDFs, credentials, private run state | deny | Private control plane, source data, generated evidence, or secrets. |
 | demonstration | `DEMO-*` synthetic graph and CLI workflows | admit | Demonstrates behavior without source-derived text. |
 

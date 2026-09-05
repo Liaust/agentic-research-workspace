@@ -9,6 +9,12 @@ The workspace is being built in independent, provenance-compatible surfaces.
 Only the first surface—evidence-first literature mapping—is implemented today.
 Later surfaces are a roadmap, not functionality claimed by this release.
 
+<p align="center">
+  <img src="docs/images/dogfood/corpus-overview.png" alt="Paper-level view of the 52-source superdeterminism dogfood corpus beside an evidence viewer and research controls" width="100%">
+</p>
+
+<p align="center"><em>A private 52-source dogfood run viewed at paper level: sources stay inspectable while their recorded potential relationships form the navigable map.</em></p>
+
 ## Workspace surfaces
 
 1. **Literature map (implemented):** ingest a bounded corpus, preserve what
@@ -59,6 +65,33 @@ or claim about superdeterminism. Eleven retained sources were audited with
 findings, five passed audit, 35 remain unaudited and provisional, and one audit
 was interrupted. The exact machine-readable values and qualifications are in
 [the baseline artifacts](reference_mapping_graph/baseline-v1/README.md).
+
+## From corpus to source
+
+The literature-map surface can move between a compact paper overview, the
+complete record graph, relationship-specific lenses, and one source's internal
+argument structure. These screenshots document the private dogfood viewer; the
+underlying evidence-bearing graph and source files are not part of this public
+repository.
+
+![Complete record-level graph for the 52-source dogfood corpus](docs/images/dogfood/record-graph.png)
+
+<p align="center"><em>The complete record layer: 6,872 source-grounded records, 14,442 source-local links, and 644 qualified cross-source relationships.</em></p>
+
+<table>
+  <tr>
+    <td width="58%">
+      <img src="docs/images/dogfood/tension-lens.png" alt="Tension and contradiction relationship lens across the paper corpus">
+    </td>
+    <td width="42%">
+      <img src="docs/images/dogfood/source-detail.png" alt="Source-level argument map showing records and links within one paper">
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Relationship lens.</strong> Isolate recorded potential tensions and contradictions without turning them into scientific verdicts.</td>
+    <td><strong>Source detail.</strong> Follow evidence, atoms, reasoning moves, and threads inside an individual paper.</td>
+  </tr>
+</table>
 
 ## Quick start
 
@@ -124,7 +157,9 @@ The public release is a clean-history projection, not a visibility change to
 the working research repository. It contains aggregate results and an invented
 example. It withholds PDFs, exact source evidence, source-derived statements,
 relationship endpoints and rationales, private run state, project-management
-records, local paths, and credentials. The deterministic policy and inclusion
+records, local paths, and credentials. Four explicitly allowlisted screenshots
+illustrate the private dogfood interface without releasing its underlying
+machine-readable graph or source assets. The deterministic policy and inclusion
 manifest make this boundary testable.
 
 Apache-2.0 covers original code and documentation only. No dataset license is

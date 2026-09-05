@@ -17,6 +17,16 @@ sources have not been assessed. To keep one consistent boundary, this baseline
 publishes metadata only for every registered source and does not redistribute
 any asset.
 
+The README includes four static screenshots supplied by the project owner from
+the private dogfood viewer. They illustrate the interface and rendered graph
+but do not include the underlying machine-readable graph or source files. Two
+screenshots display page 1 of Lorenzo Catani and Matthew S. Leifer's
+[*A Mathematical Framework for Operational Fine
+Tunings*](https://arxiv.org/abs/2003.10050), whose registered manuscript states
+that it is published under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The screenshots do not grant rights in any depicted third-party work or release
+the withheld dataset.
+
 ## Dataset license
 
 No dataset license is granted for the withheld graph, its source-derived

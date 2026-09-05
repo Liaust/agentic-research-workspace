@@ -81,6 +81,25 @@ _BINARY_SIGNATURES = (
     bytes((127, 69, 76, 70)),
     bytes((77, 90)),
 )
+_PNG_SIGNATURE = bytes((137, 80, 78, 71, 13, 10, 26, 10))
+_APPROVED_DOCUMENTATION_IMAGE_FINGERPRINTS = {
+    "docs/images/dogfood/corpus-overview.png": (
+        "0560d727367fb887128c654ca8ad3a2a6467809ee67a76e353f3222db8f29b40",
+        1_397_469,
+    ),
+    "docs/images/dogfood/record-graph.png": (
+        "a813048719a7cf58a6ad42206f41354089d26cf66147db77e5a4d0c5a4084e44",
+        2_635_509,
+    ),
+    "docs/images/dogfood/tension-lens.png": (
+        "25c150b28307b55ba563010c31952fedf7ec6adeb8d394f0d5f95ce05a43ddbb",
+        705_367,
+    ),
+    "docs/images/dogfood/source-detail.png": (
+        "686a888325846610f81cf01177632a89dec1b3fa7972952180f812f7064e5a0f",
+        198_806,
+    ),
+}
 _PUBLIC_GITIGNORE_ROOT_ANCHORS = frozenset(
     {".cache", "ai-dev-pack", "build", "dist", "indexes", "sources"}
 )
@@ -1480,6 +1499,18 @@ def _validate_relative_paths(paths: Sequence[Path], policy: Mapping[str, Any]) -
             raise PublicReleaseValidationError(f"candidate uses forbidden file name: {path}")
 
 
+def _is_approved_documentation_image(relative: str, raw: bytes) -> bool:
+    expected = _APPROVED_DOCUMENTATION_IMAGE_FINGERPRINTS.get(relative)
+    if expected is None:
+        return False
+    observed = (hashlib.sha256(raw).hexdigest(), len(raw))
+    if observed != expected or not raw.startswith(_PNG_SIGNATURE):
+        raise PublicReleaseValidationError(
+            f"approved documentation image fingerprint differs: {relative}"
+        )
+    return True
+
+
 def _scan_candidate_content(
     candidate_root: Path,
     *,
@@ -1624,6 +1655,8 @@ def _scan_candidate_content(
             raise PublicReleaseValidationError(f"candidate contains PDF bytes: {relative}")
         if raw.startswith(_SQLITE_HEADER):
             raise PublicReleaseValidationError(f"candidate contains a SQLite database: {relative}")
+        if _is_approved_documentation_image(relative, raw):
+            continue
         if _NUL_BYTE in raw:
             raise PublicReleaseValidationError(
                 f"candidate contains unexplained binary data: {relative}"
@@ -2275,7 +2308,15 @@ def _scan_candidate_text_against_private_needles(
     candidate_texts: dict[str, str] = {}
     for path in _candidate_files(candidate_root):
         relative = path.relative_to(candidate_root).as_posix()
-        text = path.read_text(encoding="utf-8")
+        raw = path.read_bytes()
+        if _is_approved_documentation_image(relative, raw):
+            continue
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError as error:
+            raise PublicReleaseValidationError(
+                f"candidate contains non-UTF-8 data: {relative}"
+            ) from error
         scan_text = relative + "\n" + text
         decoded_payloads = _decoded_candidate_payloads(scan_text)
         views = [
