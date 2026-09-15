@@ -14,6 +14,10 @@
   [migration inventory](../public-roadmap/MIGRATION.md).
 - The living workspace, project-wide agent and research-pack publisher remain
   design-stage capabilities, not implemented features.
+- The inherited publication scanner is conservative: encoded-looking digest
+  values can trigger a binary-content rejection. A rejection requires inspection,
+  not disabling the guard. Synthetic test commits use fixed timestamps so their
+  metadata remains reproducible across environments.
 
 ## Baseline limitations
 

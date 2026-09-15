@@ -15,6 +15,8 @@ Python package metadata uses the equivalent version `0.1.0a1`.
 - Keep the historical aggregate export intact and independently verifiable;
   add separate software-tree verification and release manifests.
 - Align CLI version reporting with installed package metadata.
+- Make all synthetic publication-test Git revisions deterministic across dates;
+  preserve the historical scanner and its rejection assertions unchanged.
 
 This is a source-checkout release. The screenshots' viewer, self-contained
 package installation and later long-form ingestion/recovery work are not

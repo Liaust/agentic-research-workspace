@@ -163,6 +163,19 @@ def test_two_builds_are_byte_identical_and_self_verifying(tmp_path: Path) -> Non
     assert len(explored["context"]["cross_source_relationships"]) == 1
 
 
+def test_fixture_commits_ignore_environment_dates(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    commits: list[str] = []
+    for index, date in enumerate(("2026-02-01T00:00:00Z", "2026-03-01T00:00:00Z")):
+        monkeypatch.setenv("GIT_AUTHOR_DATE", date)
+        monkeypatch.setenv("GIT_COMMITTER_DATE", date)
+        fixture = _release_fixture(tmp_path / str(index))
+        (fixture.repository_root / "README.md").write_text("# Identical synthetic revision\n")
+        commits.append(fixture.commit("identical synthetic revision"))
+    assert commits[0] == commits[1]
+
+
 def test_build_binds_copied_files_to_exact_projection_revision(tmp_path: Path) -> None:
     fixture = _release_fixture(tmp_path)
     first = fixture.builder().build(tmp_path / "candidate-first")
@@ -2845,6 +2858,13 @@ def _initialize_git(repository_root: Path) -> str:
 
 
 def _commit_repository(repository_root: Path, message: str) -> str:
+    # Every fixture revision, not just its first commit, must have stable
+    # identity. Wall-clock hashes can alter the metadata scanned by each test.
+    env = {
+        **os.environ,
+        "GIT_AUTHOR_DATE": "2026-01-01T00:00:00Z",
+        "GIT_COMMITTER_DATE": "2026-01-01T00:00:00Z",
+    }
     subprocess.run(("git", "-C", str(repository_root), "add", "-A"), check=True)
     subprocess.run(
         (
@@ -2859,6 +2879,7 @@ def _commit_repository(repository_root: Path, message: str) -> str:
             message,
         ),
         check=True,
+        env=env,
     )
     return subprocess.run(
         ("git", "-C", str(repository_root), "rev-parse", "HEAD"),
