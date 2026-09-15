@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "scope": "Source-checkout onboarding and public development; all paths are relative to repository root.",
+  "commands": [
+    {
+      "name": "version",
+      "argv": ["uv", "run", "research-map", "--version"],
+      "model_calls": false,
+      "writes_outputs": false
+    },
+    {
+      "name": "synthetic-walkthrough",
+      "argv": ["uv", "run", "python", "-m", "research_map.demo", "--output", "<new-output-directory>", "--json"],
+      "model_calls": false,
+      "writes_outputs": true,
+      "origin": "manually_authored_synthetic_fixture",
+      "overwrites_existing_outputs": false
+    },
+    {
+      "name": "search",
+      "argv": ["uv", "run", "research-map", "search", "<query>", "--graph", "<graph-path>", "--json"],
+      "model_calls": false,
+      "writes_outputs": false
+    },
+    {
+      "name": "explore",
+      "argv": ["uv", "run", "research-map", "explore", "--id", "<record-id>", "--graph", "<graph-path>", "--json"],
+      "model_calls": false,
+      "writes_outputs": false
+    },
+    {
+      "name": "verify-public-development-tree",
+      "argv": ["uv", "run", "python", "-m", "research_map.development", "--root", ".", "--json"],
+      "model_calls": false,
+      "writes_outputs": false,
+      "note": "Uses transient scratch storage; add --require-clean for a commit-bound release manifest."
+    },
+    {
+      "name": "write-software-manifest",
+      "argv": ["uv", "run", "python", "-m", "research_map.development", "--root", ".", "--require-clean", "--write-manifest", "dist/software-manifest.json", "--json"],
+      "model_calls": false,
+      "writes_outputs": true,
+      "overwrites_existing_outputs": false,
+      "requires_clean_git_checkout": true
+    },
+    {
+      "name": "verify-historical-baseline",
+      "argv": ["uv", "run", "python", "scripts/verify-legacy-baseline.py"],
+      "model_calls": false,
+      "writes_outputs": false,
+      "requires_full_public_git_history": true
+    }
+  ],
+  "private_inputs_required": false,
+  "live_model_workflows": "Use research-map --help and the versioned protocols; not exercised by these onboarding commands."
+}

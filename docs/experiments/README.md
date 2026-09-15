@@ -18,6 +18,11 @@ The uneven source-quality labels are part of the result, not an omitted detail.
 
 ## Reproducible public experiment
 
+The [source-to-graph walkthrough](../../examples/synthetic-study/README.md)
+checks a manually authored dossier against original invented source text,
+validates all four record types and compiles an inspectable source graph.
+It runs without models or credentials and is not an extraction benchmark.
+
 The [synthetic example](../../reference_mapping_graph/synthetic-example/README.md)
 exercises the same schemas, relationship Markdown, graph manifest, search, and
 exploration code while making no claim about real literature. It is the safe

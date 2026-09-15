@@ -1,8 +1,12 @@
 # Provisional aggregate baseline v1
 
 This directory is generated from frozen private inputs by the deterministic
-public-release builder. Except for this guide and the input lock, files in the
-directory are candidate outputs and should not be edited by hand.
+public-release builder. All non-prose artifacts, including the input lock, are
+frozen historical outputs and must not be edited in place.
+
+The manifest covers public commit `8e9ca654c7674ebe7f722d89321814e286089329`,
+not the current software version. Verify it with
+`uv run python scripts/verify-legacy-baseline.py` from a full source checkout.
 
 ## Artifacts
 

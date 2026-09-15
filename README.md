@@ -1,190 +1,176 @@
 # Agentic Research Workspace
 
-An open, agent-native workspace for the full research lifecycle: mapping a
-literature, developing questions and ideas, organizing growing research and
-code, and publishing an inspectable research pack that people and agents can
-navigate beyond a static PDF.
+An open-source workspace where researchers and agents develop research
+together—and publish it as an inspectable research pack, not only a PDF.
 
-The workspace is being built in independent, provenance-compatible surfaces.
-Only the first surface—evidence-first literature mapping—is implemented today.
-Later surfaces are a roadmap, not functionality claimed by this release.
+**Experimental alpha.** Literature mapping is the first implemented part.
+The living research workspace, project-wide coordinator and research-pack
+publisher are being designed; they are not available features yet.
 
-<p align="center">
-  <img src="docs/images/dogfood/corpus-overview.png" alt="Paper-level view of the 52-source superdeterminism dogfood corpus beside an evidence viewer and research controls" width="100%">
-</p>
+[Quick start](#try-it-without-a-model) · [Roadmap](docs/public-roadmap/README.md) ·
+[Architecture](docs/architecture/README.md) · [Contributing](CONTRIBUTING.md) ·
+[Experimental release](https://github.com/Liaust/agentic-research-workspace/releases/tag/v0.1.0-alpha.1)
 
-<p align="center"><em>A private 52-source dogfood run viewed at paper level: sources stay inspectable while their recorded potential relationships form the navigable map.</em></p>
+![Paper-level map of a 52-source superdeterminism testing corpus, alongside a source-page viewer and relationship controls](docs/images/dogfood/corpus-overview.png)
 
-## Workspace surfaces
+*The first testing corpus: 52 papers represented as an inspectable literature
+map. This screenshot shows the private research viewer, not an application
+bundled with the alpha. The underlying papers and evidence-bearing graph are
+not redistributed.*
 
-1. **Literature map (implemented):** ingest a bounded corpus, preserve what
-   each source says as evidence-linked records, propose qualified cross-source
-   relationships, and compile navigable maps and search views.
-2. **Research workbench (planned):** develop literature gaps and research
-   questions, organize notes, decisions, data, experiments, and code as the
-   project grows, and let people and agents operate on the same explicit state.
-3. **Research pack (planned):** package the resulting corpus, provenance,
-   workflows, outputs, and narrative into an agent-navigable publication that
-   complements conventional papers and PDFs.
+## What works today
 
-This initial repository state publishes the deterministic literature-map
-coordinator, schemas, protocols, aggregate results from one dogfood baseline,
-and a wholly synthetic demonstration. Its evidence-bearing graph and source
-assets are not included.
+- **Evidence-linked literature records:** preserve what each source says as
+  exact evidence spans, semantic atoms, reasoning moves and argument threads.
+- **Deterministic validation and compilation:** check record structure,
+  identity and references, then compile canonical Markdown into graphs.
+- **Qualified cross-source relationships:** represent potential support,
+  qualification, equivalence and tension without deciding scientific truth.
+- **Human and agent inspection:** search an explicitly selected graph and
+  explore stable record IDs with evidence and local context; JSON is available.
+- **Experimental pipeline tooling:** source registration, reading/audit
+  coordination, corpus runs, cross-referencing and recovery code and protocols.
 
-## What the system does
+The easiest supported entry point is the **model-free source-checkout demo**
+below. Real-corpus/model workflows remain advanced experiments and require
+your own inputs, configuration and review. There is no hosted service or
+complete research IDE in this release.
 
-The mapper preserves four source-local record types—evidence, atoms, argument
-moves, and threads—then compiles validated records into a graph. A separate
-cross-source stage can propose qualified relationship types such as potential
-support, qualification, equivalence, tension, or contradiction. Search and
-one-hop exploration operate deterministically over one explicitly selected
-compiled graph.
+## Try it without a model
 
-The map describes what literature records say and how records may connect. It
-does not decide which scientific position is correct, manufacture missing
-premises, or treat a potential relationship as proof.
+Requires **Python 3.12+**, Git and [uv](https://docs.astral.sh/uv/getting-started/installation/).
+No API key, model subscription or private corpus is needed for these commands.
 
-## Superdeterminism dogfood baseline
+```sh
+git clone https://github.com/Liaust/agentic-research-workspace.git
+cd agentic-research-workspace
+uv sync --frozen --all-groups
+uv run python -m research_map.demo --output build/synthetic-study
+```
 
-Superdeterminism is the first testing corpus for the general system; it is not
-the product identity or a constraint on what research domains the workspace
-can support.
+Expected: **6 synthetic records, 9 links, zero model calls.**
 
-The frozen provisional baseline records:
+The [invented source](examples/synthetic-study/source.md) and
+[manually authored dossier](examples/synthetic-study/dossier.md) describe a
+timing pattern and why it does not establish causation. The demo validates
+their relationship and compiles a graph; it does **not** pretend to extract
+new knowledge with a model.
 
-- 53 registered logical sources and 54 registered assets;
-- 52 sources retained in the compiled research graph;
-- 6,872 records: 2,550 evidence records, 2,621 atoms, 1,416 moves, and 285
-  threads;
-- 14,442 source-local edges and 644 potential cross-source relationships; and
-- 1,325 inspected source pairs with one unresolved pair.
+Follow the limitation back to its evidence and argument:
 
-These are aggregate measurements, not a completeness score, consensus result,
-or claim about superdeterminism. Eleven retained sources were audited with
-findings, five passed audit, 35 remain unaudited and provisional, and one audit
-was interrupted. The exact machine-readable values and qualifications are in
-[the baseline artifacts](reference_mapping_graph/baseline-v1/README.md).
+```sh
+uv run research-map search "causation" --graph build/synthetic-study/graph.json
+uv run research-map explore --id LIB-903:atom:causal-limit --graph build/synthetic-study/graph.json --json
+```
 
-## From corpus to source
+Inspect the generated dossier, graph, context envelopes and hash receipt in
+`build/synthetic-study/`. Exact reruns are safe; changed outputs are not
+overwritten. See the [walkthrough](examples/synthetic-study/README.md).
 
-The literature-map surface can move between a compact paper overview, the
-complete record graph, relationship-specific lenses, and one source's internal
-argument structure. These screenshots document the private dogfood viewer; the
-underlying evidence-bearing graph and source files are not part of this public
-repository.
+To inspect a relationship between two invented sources:
 
-![Complete record-level graph for the 52-source dogfood corpus](docs/images/dogfood/record-graph.png)
+```sh
+uv run research-map explore --id LIB-901:atom:indicator-response --graph reference_mapping_graph/synthetic-example/graph.json --json
+```
 
-<p align="center"><em>The complete record layer: 6,872 source-grounded records, 14,442 source-local links, and 644 qualified cross-source relationships.</em></p>
+[Command discovery](commands.json) provides explicit arguments for agents.
+Use `uv run research-map --help` for the broader experimental CLI.
+For the reproducible alpha, check out tag `v0.1.0-alpha.1` before installing;
+`main` receives ongoing development.
+
+## How literature becomes a map
+
+```text
+immutable source
+  → exact evidence
+  → source-local assertions, reasoning moves and threads
+  → validated canonical Markdown
+  → compiled graph and qualified cross-source relationships
+  → human navigation and agent queries
+```
+
+The graph is a projection, not a second truth store. A source's own assertion
+is never merged away to manufacture consensus. Relationships inferred by the
+mapper remain explicitly potential. Schema validity is not scientific
+correctness or proof that a source was interpreted faithfully.
+
+## What the maps look like
+
+![Record-level view of the private 52-source testing corpus](docs/images/dogfood/record-graph.png)
+
+*From a paper overview to the record layer: the frozen testing baseline
+contains 6,872 records, 14,442 source-local links and 644 potential
+cross-source relationships.*
 
 <table>
   <tr>
-    <td width="58%">
-      <img src="docs/images/dogfood/tension-lens.png" alt="Tension and contradiction relationship lens across the paper corpus">
-    </td>
-    <td width="42%">
-      <img src="docs/images/dogfood/source-detail.png" alt="Source-level argument map showing records and links within one paper">
-    </td>
+    <td width="58%"><img src="docs/images/dogfood/tension-lens.png" alt="Potential tensions and contradictions isolated across the testing corpus"></td>
+    <td width="42%"><img src="docs/images/dogfood/source-detail.png" alt="One paper's internal records, reasoning moves and argument threads"></td>
   </tr>
   <tr>
-    <td><strong>Relationship lens.</strong> Isolate recorded potential tensions and contradictions without turning them into scientific verdicts.</td>
-    <td><strong>Source detail.</strong> Follow evidence, atoms, reasoning moves, and threads inside an individual paper.</td>
+    <td><strong>Relationship lens.</strong> Inspect potential tensions without turning them into scientific verdicts.</td>
+    <td><strong>Source detail.</strong> Keep a paper's internal reasoning visible.</td>
   </tr>
 </table>
 
-## Quick start
+Superdeterminism is a **testing corpus**, not the project's identity or domain
+limit. These four approved screenshots illustrate a private run. The viewer
+itself is not bundled yet; a public, rights-safe viewer is on the roadmap.
 
-Python 3.12 or newer and [uv](https://docs.astral.sh/uv/) are required.
+The published aggregate baseline retained 52 of 53 registered sources. Its
+audit depth is uneven: 35 sources remain unaudited/provisional, 11 were audited
+with findings, five passed audit and one audit was interrupted. Counts measure
+retained output, not completeness or correctness.
+[Baseline details](reference_mapping_graph/baseline-v1/README.md).
 
-```sh
-uv sync --frozen --all-groups
-uv run pytest
-```
+## Where this is going
 
-Search the bundled synthetic graph:
+Today we reconstruct structure from already-published papers. The long-term
+goal is to preserve richer structure **as research happens**.
 
-```sh
-uv run research-map search "indicator" \
-  --graph reference_mapping_graph/synthetic-example/graph.json \
-  --json
-```
+| Part | Purpose | Status |
+|---|---|---|
+| Literature map | Understand sources, evidence, arguments and their relationships | Experimental implementation |
+| Living research workspace | Organize evolving questions, notes, derivations, code, data, experiments and decisions | Design stage |
+| Published research pack | Release a curated, versioned representation that humans and agents can inspect and reuse | Design stage |
 
-Explore one stable record and its one-hop context:
+The living workspace may retain incomplete, provisional and private material.
+A published pack is a **selected, checked release**, not a dump of that
+workspace. Humans might read a narrative and navigate a graph; agents might
+resolve stable IDs, inspect provenance and retrieve reproducible artifacts.
+Both should reach the same underlying published records.
 
-```sh
-uv run research-map explore \
-  --id LIB-901:atom:indicator-response \
-  --graph reference_mapping_graph/synthetic-example/graph.json \
-  --json
-```
+We are designing that publication target first, then working backward to the
+capture workflow. The intended operating model is one project-wide coordinator
+agent that can delegate focused work and integrate its returns. Whole-project
+access does not grant unlimited publication or action authority.
 
-Verify the candidate against its manifest, policy, schemas, links, and
-synthetic graph:
+Read the [workspace/pack design](docs/architecture/WORKSPACE_AND_PACK.md) and
+the [outcome roadmap](docs/public-roadmap/README.md).
 
-```sh
-scripts/verify-public-release.sh .
-```
+## Limits and privacy
 
-The same entry points and arguments are available in
-[`commands.json`](reference_mapping_graph/commands.json) for agent and tool
-discovery.
+- This is a research prototype, not an autonomous scientist or a production IDE.
+- Search is lexical; exploration is bounded. Neither adjudicates a claim.
+- The full private corpus and graph are not included. Their scientific content
+  cannot be independently evaluated from aggregate counts or screenshots.
+- The alpha is supported from a source checkout; a self-contained package
+  installation is not yet supported.
+- Later long-form ingestion/recovery work is not included in this baseline.
+- Public code does not make anyone's research public. Keep real working data
+  outside this software checkout.
 
-## Current architecture
+[Limitations](docs/limitations/README.md) ·
+[Publication policy](docs/publication/PUBLICATION_POLICY.md) ·
+[Third-party rights](THIRD_PARTY_RIGHTS.md)
 
-```text
-immutable source asset
-  -> registered source identity
-  -> exact evidence spans
-  -> source-local semantic records
-  -> validated Markdown record
-  -> deterministic compiled graph
-  -> potential cross-source relationships
-  -> search, exploration, and views
-```
+## Develop with us
 
-The Markdown record is canonical; graphs and views are reproducible
-projections. Semantic work is bounded by schemas and deterministic admission.
-CLI commands use explicit inputs, provide machine-readable output, and do not
-guess a “latest” graph. Shared identity, provenance, privacy, and
-human/agent-parity constraints will carry across later workspace surfaces. See
-[the public architecture guide](docs/architecture/README.md) and the versioned
-[literature-map protocols](protocols/research-map/README.md).
+Development of the general system happens here. Start with a reproducible bug,
+a rights-safe example, a navigation improvement or a concrete research-pack
+question. The [contribution guide](CONTRIBUTING.md) covers setup, tests and
+the boundaries that changes must preserve.
 
-## Public/private boundary
-
-The public release is a clean-history projection, not a visibility change to
-the working research repository. It contains aggregate results and an invented
-example. It withholds PDFs, exact source evidence, source-derived statements,
-relationship endpoints and rationales, private run state, project-management
-records, local paths, and credentials. Four explicitly allowlisted screenshots
-illustrate the private dogfood interface without releasing its underlying
-machine-readable graph or source assets. The deterministic policy and inclusion
-manifest make this boundary testable.
-
-Apache-2.0 covers original code and documentation only. No dataset license is
-granted for the private graph or third-party works. Read
-[THIRD_PARTY_RIGHTS.md](THIRD_PARTY_RIGHTS.md) before reusing metadata or
-research material.
-
-## Experimental status
-
-This is a research prototype. The retained baseline has uneven audit depth,
-the public example is synthetic, lexical search is not semantic retrieval, and
-the public aggregate release cannot be used to independently inspect the
-private graph’s scientific content. The research workbench and research-pack
-surfaces are not implemented. See the [limitations](docs/limitations/README.md),
-[experiments](docs/experiments/README.md), and [public roadmap](docs/public-roadmap/README.md).
-
-## Contributing and security
-
-Contributions should preserve source identity, provenance, deterministic
-validation, and the descriptive-mapper boundary. Start with
-[CONTRIBUTING.md](CONTRIBUTING.md). Report sensitive issues according to
-[SECURITY.md](SECURITY.md); never put private source material in a public issue.
-
-## License and citation
-
-Original code and documentation are licensed under
-[Apache-2.0](LICENSE). Citation metadata is provided in
-[CITATION.cff](CITATION.cff).
+The original code and documentation are [Apache-2.0 licensed](LICENSE).
+This grants no license to third-party papers or the private graph.
+[Citation metadata](CITATION.cff) is included.

@@ -9,9 +9,9 @@ lifecycle through three separately deliverable surfaces:
    source-local records and qualified cross-source relationships;
 2. the planned **research workbench** will connect questions, notes,
    decisions, data, experiments, and code without erasing their origins; and
-3. the planned **research pack** will expose the accumulated corpus,
-   provenance, workflows, results, and narrative as a portable publication for
-   both human and agent navigation.
+3. the planned **research pack** will expose a curated, versioned selection of
+   results, artifacts and provenance for both human and agent navigation—not a
+   raw export of the living workspace.
 
 Only the literature-map surface is implemented in this release. The broader
 shape constrains shared identity, provenance, privacy, and human/agent parity;
@@ -54,7 +54,19 @@ graph. This avoids hidden selection of “latest” state and gives an orchestra
 the same control surface as a terminal user. Subsequent workspace surfaces must
 preserve the same parity.
 
-## Public projection
+## Publication-first design
+
+The next cross-surface design milestone is the research-pack reference design;
+the living-workspace capture workflow is derived backward from that target.
+See [workspace and pack](WORKSPACE_AND_PACK.md) and the
+[twenty publication questions](RESEARCH_PACK_QUESTIONS.md).
+
+The intended operating layer is one project-wide coordinator that delegates
+focused work and integrates inspectable returns. This is distinct from both
+the deterministic pipeline coordinator implemented today and external agents
+querying a future immutable pack.
+
+## Historical public projection
 
 The public-release builder reads a frozen private commit, input lock, source
 registrations and asset bytes, graph, graph manifest, publication policy, and
@@ -63,6 +75,11 @@ approved aggregates, adds an invented example, scans for forbidden material,
 and writes a manifest-bound candidate atomically. Verification of that
 candidate requires no private input.
 
-More detailed early literature-map design hypotheses remain in
+The current public repository evolves through ordinary reviewed software
+commits; it is no longer regenerated wholesale for every change. Its historical
+aggregate export remains pinned. See the
+[publication policy](../publication/PUBLICATION_POLICY.md).
+
+More detailed **historical, exploratory** literature-map design hypotheses remain in
 [OVERVIEW.md](OVERVIEW.md), [ONTOLOGY.md](ONTOLOGY.md), and
 [PIPELINE.md](PIPELINE.md).
