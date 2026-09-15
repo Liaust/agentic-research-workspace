@@ -1,0 +1,16 @@
+name: Feature proposal
+description: Propose a bounded improvement tied to a research workflow.
+title: 'Proposal: '
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What should a researcher or agent be able to do?
+      description: Describe the current gap and how you would verify the improvement.
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Scope and boundaries
+      description: Note provenance, privacy, existing contracts and related roadmap outcomes.

@@ -1,0 +1,21 @@
+name: Bug report
+description: Report a reproducible software problem using public or synthetic inputs.
+title: 'Bug: '
+body:
+  - type: markdown
+    attributes:
+      value: 'Do not attach private papers, research records, credentials or local paths. Report security issues through SECURITY.md.'
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and expected result
+      description: Include commands and the smallest original synthetic example.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Version and environment
+      description: Release or commit, Python version and operating system. Remove identifying paths.
+    validations:
+      required: true
