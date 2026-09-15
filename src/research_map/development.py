@@ -198,9 +198,33 @@ def main() -> int:
     parser.add_argument("--root", required=True, type=Path)
     parser.add_argument("--require-clean", action="store_true")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument(
+        "--write-manifest",
+        type=Path,
+        help="Write a new JSON manifest directly under the checkout's ignored dist directory",
+    )
     arguments = parser.parse_args()
+    if arguments.write_manifest and not arguments.require_clean:
+        parser.error("--write-manifest requires --require-clean")
     try:
         result = verify_tree(arguments.root, require_clean=arguments.require_clean)
+        if arguments.write_manifest:
+            destination = arguments.write_manifest.absolute()
+            expected_parent = arguments.root.resolve() / "dist"
+            if destination.parent != expected_parent or destination.suffix != ".json":
+                raise ValueError("manifest must be a new JSON file directly under the root's dist")
+            if expected_parent.is_symlink() or destination.is_symlink():
+                raise ValueError("manifest output must not be a symbolic link")
+            ignored = subprocess.run(
+                ["git", "-C", str(arguments.root), "check-ignore", "-q", str(destination)],
+                check=False,
+                capture_output=True,
+            )
+            if ignored.returncode != 0:
+                raise ValueError("manifest output must be Git-ignored")
+            expected_parent.mkdir(exist_ok=True)
+            with destination.open("xb") as handle:
+                handle.write(canonical_json_bytes(result))
     except (OSError, ValueError, subprocess.CalledProcessError) as error:
         if arguments.json:
             print(json.dumps({"ok": False, "error": str(error)}))

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentic-research-workspace"
-version = "0.1.0"
+version = "0.1.0a1"
 description = "Agent-native workspace for the full research lifecycle"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -12,6 +12,16 @@ dependencies = [
   "jsonschema>=4.25,<5",
   "PyYAML>=6.0,<7",
 ]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Repository = "https://github.com/Liaust/agentic-research-workspace"
+Issues = "https://github.com/Liaust/agentic-research-workspace/issues"
+Roadmap = "https://github.com/Liaust/agentic-research-workspace/blob/main/docs/public-roadmap/README.md"
 
 [project.scripts]
 research-map = "research_map.cli:main"

@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import json
 import shutil
 import subprocess
+from importlib.metadata import version
 from pathlib import Path
 
 import pytest
 
+from research_map.cli import build_parser
 from research_map.development import selected_paths, verify_tree
 from research_map.public_release import PublicReleaseValidationError
 
@@ -113,3 +116,90 @@ def test_git_surface_includes_new_files_and_rejects_dirty_release(public_tree: P
 def test_clean_release_requires_git(public_tree: Path) -> None:
     with pytest.raises(PublicReleaseValidationError, match="Git checkout"):
         verify_tree(public_tree, require_clean=True)
+
+
+def test_cli_version_matches_package_metadata(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit) as result:
+        build_parser().parse_args(["--version"])
+    assert result.value.code == 0
+    assert (
+        capsys.readouterr().out.strip() == f"research-map {version('agentic-research-workspace')}"
+    )
+
+
+def test_report_write_requires_clean_mode(monkeypatch: pytest.MonkeyPatch) -> None:
+    from research_map.development import main
+
+    monkeypatch.setattr("sys.argv", ["development", "--root", ".", "--write-manifest", "out.json"])
+    with pytest.raises(SystemExit) as result:
+        main()
+    assert result.value.code == 2
+
+
+def test_release_manifest_is_commit_bound_and_never_overwritten(
+    public_tree: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from research_map.development import main
+
+    def git(*args: str) -> str:
+        return subprocess.run(
+            ["git", "-C", str(public_tree), *args],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+
+    git("init")
+    git("add", ".")
+    git(
+        "-c",
+        "user.name=Synthetic Test",
+        "-c",
+        "user.email=test@example.invalid",
+        "commit",
+        "-m",
+        "Synthetic release fixture",
+    )
+    output = public_tree / "dist/software-manifest.json"
+    argv = [
+        "development",
+        "--root",
+        str(public_tree),
+        "--require-clean",
+        "--write-manifest",
+        str(output),
+    ]
+    monkeypatch.setattr("sys.argv", argv)
+    assert main() == 0
+    original = output.read_bytes()
+    report = json.loads(original)
+    assert report["repository_commit"] == git("rev-parse", "HEAD")
+    assert report["ok"] is True
+    assert "dist/software-manifest.json" not in {item["path"] for item in report["files"]}
+    assert not git("status", "--porcelain", "--untracked-files=all")
+    assert main() == 1
+    assert output.read_bytes() == original
+
+    outside = public_tree.parent / "outside.json"
+    monkeypatch.setattr("sys.argv", [*argv[:-1], str(outside)])
+    assert main() == 1
+    assert not outside.exists()
+
+    readme = public_tree / "README.md"
+    readme.write_text(readme.read_text() + "\nAn uncommitted change.\n")
+    dirty_output = public_tree / "dist/dirty.json"
+    monkeypatch.setattr("sys.argv", [*argv[:-1], str(dirty_output)])
+    assert main() == 1
+    assert not dirty_output.exists()
+
+
+def test_command_catalog_has_explicit_model_free_entrypoints() -> None:
+    catalog = json.loads((ROOT / "commands.json").read_text())
+    assert catalog["private_inputs_required"] is False
+    commands = catalog["commands"]
+    assert len({command["name"] for command in commands}) == len(commands)
+    for command in commands:
+        assert command["argv"][:2] == ["uv", "run"]
+        assert all(isinstance(argument, str) and argument for argument in command["argv"])
+        assert command["model_calls"] is False
+        assert isinstance(command["writes_outputs"], bool)

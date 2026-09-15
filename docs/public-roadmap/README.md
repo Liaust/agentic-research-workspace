@@ -76,3 +76,15 @@ See the [migration inventory](MIGRATION.md). A listed improvement is not a claim
 that it is shipped. Concrete work belongs in focused
 [GitHub issues](https://github.com/Liaust/agentic-research-workspace/issues);
 this document remains the outcome map.
+
+## Tracked next work
+
+- [Reference research-pack design](https://github.com/Liaust/agentic-research-workspace/issues/1)
+  — [design milestone](https://github.com/Liaust/agentic-research-workspace/milestone/1).
+- [Public synthetic graph viewer](https://github.com/Liaust/agentic-research-workspace/issues/2)
+  and [self-contained package resources](https://github.com/Liaust/agentic-research-workspace/issues/3)
+  — [mapper usability milestone](https://github.com/Liaust/agentic-research-workspace/milestone/2).
+- [Reviewed long-form ingestion/recovery migration](https://github.com/Liaust/agentic-research-workspace/issues/4).
+
+These issues define scope and acceptance, not permission to publish private
+research or automatically start a corpus run.

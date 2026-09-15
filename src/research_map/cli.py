@@ -6,6 +6,7 @@ import argparse
 import sqlite3
 import sys
 from collections.abc import Sequence
+from importlib.metadata import version
 from pathlib import Path
 from typing import Any
 
@@ -99,7 +100,9 @@ DEFAULT_STATE_PATH = Path(".cache/research-map/state.sqlite3")
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="research-map")
-    parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {version('agentic-research-workspace')}"
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     register = subparsers.add_parser("register", help="register one immutable corpus source")
@@ -170,10 +173,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     complete_corpus = subparsers.add_parser(
         "complete-corpus",
-        help=(
-            "operate one isolated corpus-completion run; see the tracked feature "
-            "operator_runbook.md"
-        ),
+        help="operate one isolated experimental corpus-completion run from explicit inputs",
     )
     complete_corpus.add_argument(
         "completion_action", choices=("preflight", "run", "status", "report")

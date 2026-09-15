@@ -18,10 +18,12 @@ publication. Alpha versions may change CLI and record contracts.
 5. Generate a software manifest from the clean source tree using:
 
    ```sh
-   uv run python -m research_map.development --root . --require-clean --json
+   uv run python -m research_map.development --root . --require-clean --write-manifest dist/software-manifest.json
    ```
 
-   Preserve the JSON output as a release attachment. Its `repository_commit`
+   Attach the new JSON file from the ignored `dist` directory. Existing files
+   are never overwritten. Add `--json` for the same machine-readable stdout.
+   Its `repository_commit`
    must equal the release tag's commit. It lists file hashes and a deterministic
    tree hash; it is not the older aggregate-data manifest.
 6. Create an annotated tag and a GitHub **prerelease** with the curated notes.

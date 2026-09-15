@@ -5,7 +5,10 @@ type: software
 authors:
   - family-names: Miranda
     given-names: Leonardo
-version: 0.1.0
+version: 0.1.0a1
+date-released: 2026-09-15
+repository-code: "https://github.com/Liaust/agentic-research-workspace"
+url: "https://github.com/Liaust/agentic-research-workspace/releases/tag/v0.1.0-alpha.1"
 license: Apache-2.0
 abstract: >-
   Experimental agent-native workspace for the research lifecycle, beginning

@@ -32,6 +32,13 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run mypy src tests
       - run: uv run pytest
+      - name: Replay model-free quick start
+        run: |
+          uv run research-map --version
+          uv run python -m research_map.demo --output build/synthetic-study
+          uv run research-map search "causation" --graph build/synthetic-study/graph.json
+          uv run research-map explore --id LIB-903:atom:causal-limit --graph build/synthetic-study/graph.json --json
+          uv run research-map explore --id LIB-901:atom:indicator-response --graph reference_mapping_graph/synthetic-example/graph.json --json
       - run: uv run python -m research_map.development --root . --require-clean
       - run: uv run python scripts/verify-legacy-baseline.py
       - run: uv build
